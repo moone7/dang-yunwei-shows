@@ -244,6 +244,30 @@
   .past-body{display:none;}
   .past-body.expanded{display:block;}
 
+  /* PWA 安装横幅 */
+  .install-banner{position:fixed;left:50%;transform:translateX(-50%);
+    bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:70;
+    width:min(440px,calc(100vw - 36px));display:flex;align-items:center;gap:12px;
+    padding:12px 14px;border-radius:18px;
+    background:rgba(10,15,38,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(157,184,232,0.4);
+    box-shadow:0 16px 50px -14px rgba(0,0,0,.7),0 0 30px rgba(157,184,232,.25);
+    animation:bannerIn .5s ease .8s both;}
+  .install-banner[hidden]{display:none;}
+  @keyframes bannerIn{from{opacity:0;transform:translateX(-50%) translateY(16px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+  .ib-ic{font-size:22px;flex:0 0 auto;line-height:1;}
+  .ib-txt{flex:1;min-width:0;}
+  .ib-title{font-family:var(--font-serif);font-size:15px;color:var(--silver);letter-spacing:1px;}
+  .ib-sub{font-size:11.5px;color:var(--text-2);margin-top:2px;line-height:1.4;}
+  .ib-btn{flex:0 0 auto;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0a0f26;
+    border:none;border-radius:999px;padding:9px 18px;font-size:13px;font-weight:500;cursor:pointer;letter-spacing:1px;
+    font-family:var(--font-sans);transition:transform .2s ease,box-shadow .3s ease;}
+  .ib-btn:hover{box-shadow:0 0 18px rgba(157,184,232,.45);}
+  .ib-btn:active{transform:scale(.96);}
+  .ib-x{flex:0 0 auto;background:transparent;border:none;color:var(--text-3);font-size:22px;line-height:1;
+    cursor:pointer;padding:0 4px 0 2px;}
+  .ib-x:hover{color:var(--silver);}
+
   /* footer */
   footer{position:relative;z-index:2;padding:70px 0 40px;margin-top:30px;
     border-top:1px solid rgba(255,255,255,0.06);text-align:center;}
@@ -315,18 +339,27 @@
         <h2>关于党姐</h2>
         <p>一束被月光浸过的声音，从上海音乐学院的琴房，走向一座座剧场。</p>
       </div>
-      <div class="about-grid reveal">
-        <div class="bio">
-          <div class="quote">党韫葳，中国内地<b>音乐剧女演员</b>，毕业于<b>上海音乐学院音乐戏剧系</b>（本科及研究生），七幕人生签约资深音乐剧演员，曾任多部大型音乐剧女主角。</div>
-          <div class="sub">从 2014 年《上海滩》的方艳芸，到 2015 年《紫石街》的潘金莲，再到 2016–2017 年百老汇经典《音乐之声》中文版的玛利亚——她以温润而有力量的声线，把一个个角色唱成了观众记忆里的光。此后在《我，堂吉诃德》饰阿尔东莎、《放牛班的春天》饰维奥雷特等作品中持续绽放。</div>
-          <div class="tags">
-            <span>《音乐之声》玛利亚</span><span>《我，堂吉诃德》阿尔东莎</span>
-            <span>《放牛班的春天》维奥雷特</span><span>《上海滩》方艳芸</span>
-            <span>《紫石街》潘金莲</span><span>《四大美女》王昭君</span>
+      <div class="fold-box collapsed" id="aboutFoldBox">
+        <button class="fold-btn" id="aboutFoldBtn">
+          <span class="fold-label">简介与剧照</span>
+          <span class="fold-count">（点击展开）</span>
+          <span class="fold-chev">▸</span>
+        </button>
+        <div class="fold-body">
+          <div class="about-grid reveal">
+            <div class="bio">
+              <div class="quote">党韫葳，中国内地<b>音乐剧女演员</b>，毕业于<b>上海音乐学院音乐戏剧系</b>（本科及研究生），七幕人生签约资深音乐剧演员，曾任多部大型音乐剧女主角。</div>
+              <div class="sub">从 2014 年《上海滩》的方艳芸，到 2015 年《紫石街》的潘金莲，再到 2016–2017 年百老汇经典《音乐之声》中文版的玛利亚——她以温润而有力量的声线，把一个个角色唱成了观众记忆里的光。此后在《我，堂吉诃德》饰阿尔东莎、《放牛班的春天》饰维奥雷特等作品中持续绽放。</div>
+              <div class="tags">
+                <span>《音乐之声》玛利亚</span><span>《我，堂吉诃德》阿尔东莎</span>
+                <span>《放牛班的春天》维奥雷特</span><span>《上海滩》方艳芸</span>
+                <span>《紫石街》潘金莲</span><span>《四大美女》王昭君</span>
+              </div>
+              <div class="src">简介来源：百度百科 / 公开演出资料（节选整理）</div>
+            </div>
+            <div class="gallery" id="gallery"></div>
           </div>
-          <div class="src">简介来源：百度百科 / 公开演出资料（节选整理）</div>
         </div>
-        <div class="gallery" id="gallery"></div>
       </div>
     </section>
 
@@ -402,6 +435,17 @@
       <div class="note">本页本地离线生成 · 数据全程不出本机 · 重新运行抓取脚本即可更新</div>
     </div>
   </footer>
+
+  <!-- PWA 安装引导横幅 -->
+  <div class="install-banner" id="installBanner" hidden>
+    <div class="ib-ic">📲</div>
+    <div class="ib-txt">
+      <div class="ib-title">装到桌面 / 主屏</div>
+      <div class="ib-sub">把党韫葳的演出排期收进口袋，离线也能看</div>
+    </div>
+    <button class="ib-btn" id="installBtn">安装</button>
+    <button class="ib-x" id="installClose" aria-label="关闭">×</button>
+  </div>
 
   <!-- ⑥ 底部固定导航 -->
   <nav class="bottom-nav" id="bottomNav">
@@ -611,6 +655,14 @@ function renderSchedule(){
       const st=card?card.querySelector('.status'):null;
       if(st){ st.className='status '+(on?'bought':(isFuture(s)?'future':'done'));
         st.textContent=on?'已购 ✓':(isFuture(s)?'即将开演':'已落幕'); }
+      // 注入/移除倒计时：点击标记已购后即时出现，无需重渲染
+      const act=card?card.querySelector('.show-action'):null;
+      if(act){
+        let cd=act.querySelector('.countdown');
+        if(on && isFuture(s)){
+          if(!cd){ cd=document.createElement('div'); cd.className='countdown'; cd.dataset.dt=s.datetime; act.insertBefore(cd, btn); }
+        } else if(cd){ cd.remove(); }
+      }
       renderStats();
       updateCountdowns();
     });
@@ -747,6 +799,12 @@ function bind(){
   document.getElementById("upcoming").addEventListener("change",e=>{
     state.upcomingOnly=e.target.checked; renderSchedule();
   });
+  // 顶部简介（关于党姐）折叠
+  const aboutBox=document.getElementById('aboutFoldBox');
+  const aboutBtn=document.getElementById('aboutFoldBtn');
+  if(aboutBox&&aboutBtn){
+    aboutBtn.addEventListener('click',()=>aboutBox.classList.toggle('collapsed'));
+  }
   // 角色卡折叠
   const rolesBox=document.getElementById('rolesFoldBox');
   const rolesBtn=document.getElementById('rolesFoldBtn');
@@ -781,12 +839,48 @@ function init(){
 }
 init();
 
-/* PWA: 注册 Service Worker（file:// 协议会静默失败，不影响本地双击打开） */
+/* PWA: 注册 Service Worker + 主动弹出安装引导 */
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
     navigator.serviceWorker.register('./sw.js').catch(()=>{});
   });
 }
+
+(function(){
+  const banner=document.getElementById('installBanner');
+  const btn=document.getElementById('installBtn');
+  const close=document.getElementById('installClose');
+  if(!banner||!btn||!close) return;
+
+  const standalone=()=>window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches;
+  const isIOS=()=>/iP(ad|hone|od)/.test(navigator.userAgent)||(navigator.userAgent.includes('Macintosh')&&'ontouchend' in document);
+  let deferred=null;
+
+  // 已安装则不再提示
+  if(standalone()||(window.navigator&&navigator.standalone)){ banner.hidden=true; return; }
+
+  // 安卓/桌面 Chrome：捕获安装事件，显示横幅
+  window.addEventListener('beforeinstallprompt',(e)=>{
+    e.preventDefault();
+    deferred=e;
+    banner.hidden=false;
+  });
+  window.addEventListener('appinstalled',()=>{ banner.hidden=true; deferred=null; });
+
+  // iOS Safari 无 beforeinstallprompt，直接引导手动安装
+  if(isIOS() && !standalone()){ banner.hidden=false; }
+
+  btn.addEventListener('click',async ()=>{
+    if(deferred){
+      deferred.prompt();
+      try{ const r=await deferred.userChoice; if(r&&r.outcome==='accepted') banner.hidden=true; }catch(e){}
+      deferred=null;
+    } else if(isIOS()){
+      alert('在 Safari 中：点击底部工具栏的「分享」按钮 → 选择「添加到主屏幕」，即可把本页固定到桌面。');
+    }
+  });
+  close.addEventListener('click',()=>{ banner.hidden=true; });
+})();
 </script>
 </body>
 </html>
