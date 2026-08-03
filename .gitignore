@@ -1,0 +1,6 @@
+.gitcreds
+page1.html
+fetch_test.py
+__pycache__/
+*.pyc
+.DS_Store
