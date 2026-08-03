@@ -1,0 +1,39 @@
+name: 每日更新演出档案
+
+on:
+  schedule:
+    - cron: '0 1 * * *'        # 每天 UTC 01:00 = 北京时间 09:00
+  workflow_dispatch:           # 允许在 GitHub 网页手动点一下立即运行
+
+permissions:
+  contents: write              # 允许本 workflow 提交并推送
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 拉取仓库
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0       # 需要完整历史才能 commit
+
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: 抓取 saoju 并生成展示页
+        run: python dang_yunwei_scraper.py
+
+      - name: 提交并推送更新
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add shows.json index.html
+          if git diff --cached --quiet; then
+            echo "数据无变化，跳过提交"
+          else
+            git commit -m "chore: 每日自动更新演出数据 $(TZ=Asia/Shanghai date +'%Y-%m-%d %H:%M')"
+            git push
+          fi
