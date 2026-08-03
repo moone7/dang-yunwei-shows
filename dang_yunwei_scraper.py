@@ -25,6 +25,31 @@ ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
+# saoju 巡演页 ID: 这些巡演含党韫葳未来场/分城场次 (大麦无按人聚合入口且接口有风控,
+# 故改用 saoju tour 页 —— 同源、零风控、可自动化)。需要追新巡演时手动增删此列表。
+TOUR_SEEDS = [705]
+
+
+def fetch_url(url):
+    """抓取任意 URL (带重试)。"""
+    last = None
+    for attempt in range(3):
+        try:
+            req = urllib.request.Request(url, headers=UA)
+            with urllib.request.urlopen(req, context=ctx, timeout=25) as r:
+                return r.read().decode('utf-8', 'replace')
+        except Exception as e:
+            last = e
+            time.sleep(1.5)
+    raise RuntimeError(f"抓取失败: {url} -> {last}")
+
+
+def get_tour_title(html):
+    m = re.search(r'<title>(.*?)</title>', html, re.S)
+    t = m.group(1).strip() if m else "巡演"
+    t = re.split(r'[-_|]', t)[0].strip()
+    return t or "巡演"
+
 
 class RowParser(HTMLParser):
     """把演出 <table> 的每一行 <tr> 收集为 cell 列表 (cell 含文本与内部链接)。"""
@@ -152,6 +177,103 @@ def show_key(s):
     return (s.get('datetime'), mid, sid)
 
 
+def parse_tour(html, artist_id):
+    """解析 saoju 巡演页: 页面按 [城市标题 -> 场馆标题 -> 该城场次表] 分组。
+    每个场次表: 首行为角色名(<th>), 之后每行为 日期 + 各角色当场演员(<td>)。
+    仅保留含有目标演员(artist_id)的场次。"""
+    class TourParser(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True)
+            self.shows = []
+            self.cur_city = None
+            self.cur_stage = None
+            self.in_table = False
+            self.header = []
+            self.cur_row = None
+            self.cur_cell = None
+            self.in_cell = False
+            self.cur_a = None
+
+        def handle_starttag(self, tag, attrs):
+            d = dict(attrs)
+            if tag == 'table':
+                self.in_table = True
+                self.header = []
+            elif tag == 'tr' and self.in_table:
+                self.cur_row = []
+            elif tag in ('td', 'th') and self.in_table and self.cur_row is not None:
+                self.in_cell = True
+                self.cur_cell = {'text': '', 'links': []}
+            elif tag == 'a':
+                self.cur_a = {'href': d.get('href', ''), 'text': ''}
+
+        def handle_endtag(self, tag):
+            if tag in ('td', 'th') and self.in_cell:
+                self.cur_row.append(self.cur_cell)
+                self.cur_cell = None
+                self.in_cell = False
+                self.cur_a = None
+            elif tag == 'tr' and self.in_table and self.cur_row is not None:
+                self._row(self.cur_row)
+                self.cur_row = None
+            elif tag == 'table':
+                self.in_table = False
+            elif tag == 'a' and self.cur_a is not None:
+                href = self.cur_a['href']
+                txt = self.cur_a['text'].strip()
+                if '/yyj/city/' in href:
+                    self.cur_city = txt
+                elif '/yyj/stage/' in href:
+                    self.cur_stage = txt
+                elif self.in_cell and self.cur_cell is not None and txt:
+                    self.cur_cell['links'].append(self.cur_a)
+                self.cur_a = None
+
+        def handle_data(self, data):
+            if self.in_cell and self.cur_cell is not None:
+                self.cur_cell['text'] += data
+            if self.cur_a is not None:
+                self.cur_a['text'] += data
+
+        def _row(self, row):
+            if not row:
+                return
+            texts = [c['text'].strip() for c in row]
+            has_date = any(re.search(r'(\d{1,2})月(\d{1,2})日', t) or '年' in t for t in texts)
+            has_actor = any(f'/yyj/artist/{artist_id}/' in l['href']
+                            for c in row for l in c['links'])
+            if not has_date and not has_actor and not self.header:
+                self.header = texts          # 角色名表头行
+                return
+            if not has_date or not has_actor:
+                return
+            date_text = texts[0]
+            dm = re.search(r'(\d{4})年(\d{1,2})月(\d{1,2})日', date_text)
+            if dm:
+                y, mo, da = int(dm.group(1)), int(dm.group(2)), int(dm.group(3))
+            else:
+                mm = re.search(r'(\d{1,2})月(\d{1,2})日', date_text)
+                y, mo, da = time.localtime().tm_year, int(mm.group(1)), int(mm.group(2))
+            tm = re.search(r'(\d{1,2}):(\d{2})', date_text)
+            time_s = f"{int(tm.group(1)):02d}:{tm.group(2)}" if tm else None
+            date_s = f"{y:04d}-{mo:02d}-{da:02d}"
+            for i in range(1, len(row)):
+                if any(f'/yyj/artist/{artist_id}/' in l['href'] for l in row[i]['links']):
+                    role = self.header[i] if i < len(self.header) else None
+                    self.shows.append({
+                        'date': date_s, 'time': time_s,
+                        'datetime': f"{date_s}T{time_s}" if time_s else date_s,
+                        'musical': None, 'musical_id': None,
+                        'role': role, 'city': self.cur_city, 'city_id': None,
+                        'stage': self.cur_stage, 'stage_id': None,
+                        'source': 'saoju-tour',
+                    })
+
+    p = TourParser()
+    p.feed(html)
+    return p.shows
+
+
 def load_prev(here):
     """读取上一次生成的 shows.json, 作为增量对比基准。"""
     p = os.path.join(here, "shows.json")
@@ -201,6 +323,19 @@ def main():
         print(f"    - 第 {n}/{maxp} 页: {len(rows)} 场")
         if n < maxp:
             time.sleep(0.6)            # 礼貌延迟, 避免给站点压力
+
+    # ---- 巡演页抓取 (未来场/分城场次; saoju tour 页, 零风控, 可自动化) ----
+    for tid in TOUR_SEEDS:
+        try:
+            th = fetch_url(f"https://y.saoju.net/yyj/tour/{tid}")
+            title = get_tour_title(th)
+            rows = parse_tour(th, artist_id)
+            for s in rows:
+                s['musical'] = title
+                all_shows.append(s)
+            print(f"    - 巡演页 tour/{tid}《{title}》: {len(rows)} 场含{ARTIST}")
+        except Exception as e:
+            print(f"[!] 巡演页 tour/{tid} 抓取失败: {e}")
 
     # ---- 增量检测: 读取上次存档, 作为"新增"对比基准 ----
     prev = load_prev(here)

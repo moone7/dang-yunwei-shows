@@ -12,7 +12,7 @@ https://moone7.github.io/dang-yunwei-shows/
 - 换演员抓取：`python dang_yunwei_scraper.py --artist-id <id> --name <姓名>`
 
 ## 自动更新（GitHub Actions）
-项目内置 `.github/workflows/daily.yml`：每天 **北京时间 09:00** 自动运行抓取脚本，并把最新的 `shows.json` / `index.html` 推送回仓库（GitHub Pages 随之刷新），全程无需本机参与。
+项目内置 `.github/workflows/daily.yml`：每天 **北京时间 04:00** 自动运行抓取脚本，并把最新的 `shows.json` / `index.html` 推送回仓库（GitHub Pages 随之刷新），全程无需本机参与。
 - 触发方式：定时 `schedule` + 网页手动（`Actions` 标签页 → 选 `每日更新演出档案` → `Run workflow`）
 - 凭据：使用 GitHub 自带的 `GITHUB_TOKEN`，**不需要你自己的 Personal Access Token**
 - 注意：GitHub 运行服务器在境外，抓取国内站点偶尔可能不稳定；若某天失败，可到网页手动点一次 `Run workflow` 补救
@@ -25,6 +25,12 @@ https://moone7.github.io/dang-yunwei-shows/
 - `index.html` 生成的展示页（自包含）
 - `supplement.json` 手工补充的演出（如《四大美女》未来场）
 - `README.md` 本文件
+
+## 数据来源说明
+- **主源**：saoju.net 演员页（历史/已演场次，结构化程度高）。
+- **巡演 / 未来场**：saoju.net 巡演页（脚本内 `TOUR_SEEDS` 配置，如《她对此感到厌烦2026巡演》），补充演员页未覆盖的分城未来场次。
+- **其它来源**：大麦独占、或驻演类无逐场排期的演出（如《连璧》《四大美女》），手工补录于 `supplement.json`，重抓不会被覆盖。
+- **关于大麦**：大麦的搜索/列表/接口均有风控签名层，纯本地零依赖脚本无法稳定自动抓取（GitHub 境外节点更易被拦），故未做自动化；如需大麦独占演出，请把信息填入 `supplement.json`。
 
 ## 说明
 数据仅供个人追演参考，版权归原作者与各平台所有。
