@@ -2,7 +2,7 @@ name: 每日更新演出档案
 
 on:
   schedule:
-    - cron: '0 1 * * *'        # 每天 UTC 01:00 = 北京时间 09:00
+    - cron: '0 20 * * *'        # 每天 UTC 20:00 = 北京时间 04:00
   workflow_dispatch:           # 允许在 GitHub 网页手动点一下立即运行
 
 permissions:
