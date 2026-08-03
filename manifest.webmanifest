@@ -1,0 +1,32 @@
+{
+  "name": "党韫葳 · 月光演出档案",
+  "short_name": "党韫葳排期",
+  "description": "党韫葳音乐剧演出排期、角色档案与数据图表，本地优先，离线可用。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070B1F",
+  "theme_color": "#070B1F",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

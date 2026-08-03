@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#070B1F" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <title>党韫葳 · 演出排期 · 月光</title>
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icon-192.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -212,6 +217,33 @@
   .chart-card .canvas-box{position:relative;height:340px;}
   .chart-note{color:var(--text-2);font-size:14px;text-align:center;padding:36px 0;font-weight:400;}
 
+  /* 已购倒计时 */
+  .countdown{font-family:var(--font-en);font-size:12px;letter-spacing:1px;color:var(--bought);
+    background:rgba(255,210,127,0.08);border:1px solid rgba(255,210,127,0.22);border-radius:999px;
+    padding:4px 11px;white-space:nowrap;text-align:center;}
+  .countdown .u{font-size:10px;opacity:.8;}
+
+  /* 折叠面板: 角色卡 & 已落幕 */
+  .fold-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;
+    padding:14px 18px;color:var(--text-2);font-size:14px;cursor:pointer;transition:all .35s ease;}
+  .fold-btn:hover{background:var(--glass-strong);border-color:rgba(157,184,232,0.35);color:var(--silver);}
+  .fold-btn .fold-label{font-family:var(--font-serif);font-size:16px;letter-spacing:1px;color:var(--silver);}
+  .fold-btn .fold-count{font-size:12px;color:var(--accent);}
+  .fold-btn .fold-chev{display:inline-block;transition:transform .35s ease;color:var(--accent);}
+  .fold-box.collapsed .fold-chev{transform:rotate(0deg);}
+  .fold-box:not(.collapsed) .fold-chev{transform:rotate(90deg);}
+  .fold-body{overflow:hidden;transition:max-height .45s ease,opacity .35s ease;}
+  .fold-box.collapsed .fold-body{max-height:0;opacity:0;}
+  .fold-box:not(.collapsed) .fold-body{max-height:8000px;opacity:1;}
+
+  .past-wrap{margin-top:18px;}
+  .past-header{display:flex;align-items:center;gap:14px;margin:18px 0 10px;}
+  .past-header .line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--glass-border) 20%,var(--glass-border) 80%,transparent);}
+  .past-header .fold-btn{width:auto;padding:8px 18px;}
+  .past-body{display:none;}
+  .past-body.expanded{display:block;}
+
   /* footer */
   footer{position:relative;z-index:2;padding:70px 0 40px;margin-top:30px;
     border-top:1px solid rgba(255,255,255,0.06);text-align:center;}
@@ -324,9 +356,16 @@
       <div class="sec-head reveal">
         <span class="label">Roles</span>
         <h2>角色档案</h2>
-        <p>那些被月光浸过的角色，一一在记忆里亮着。</p>
+        <p>那些被月光浸过的角色，点击展开查看。</p>
       </div>
-      <div class="repo-grid" id="rolesGrid"></div>
+      <div class="fold-box collapsed" id="rolesFoldBox">
+        <button class="fold-btn" id="rolesFoldBtn">
+          <span class="fold-label">角色档案</span>
+          <span class="fold-count" id="rolesCount"></span>
+          <span class="fold-chev">▸</span>
+        </button>
+        <div class="fold-body"><div class="repo-grid" id="rolesGrid"></div></div>
+      </div>
     </section>
 
     <section class="sec" id="charts">
@@ -498,23 +537,11 @@ function getFiltered(){
   return list;
 }
 
-function renderSchedule(){
-  let list=getFiltered();
-  if(state.upcomingOnly){
-    list=[...list].sort((a,b)=>a.datetime.localeCompare(b.datetime));
-  }else{
-    list=[...list].sort((a,b)=>state.sortDesc
-      ? b.datetime.localeCompare(a.datetime) : a.datetime.localeCompare(b.datetime));
-  }
-  const box=document.getElementById("scheduleList");
-  const empty=document.getElementById("empty");
-  if(!list.length){box.innerHTML="";empty.hidden=false;return;}
-  empty.hidden=true;
-
+function renderShowGroup(list){
+  if(!list.length) return "";
   const groups={};
   list.forEach(s=>{const k=s.date.slice(0,7);(groups[k]=groups[k]||[]).push(s);});
   const keys=Object.keys(groups).sort((a,b)=>state.sortDesc&&!state.upcomingOnly?b.localeCompare(a):a.localeCompare(b));
-
   let html="";
   keys.forEach(k=>{
     const [y,m]=k.split("-");
@@ -529,6 +556,7 @@ function renderSchedule(){
       if(bought) status=`<span class="status bought">已购 ✓</span>`;
       else if(fut) status=`<span class="status future">即将开演</span>`;
       else status=`<span class="status done">已落幕</span>`;
+      const countdown=(bought&&fut)?`<div class="countdown" data-dt="${s.datetime}">计算中…</div>`:"";
       const src=s.musical_id?`<a class="btn" href="https://y.saoju.net/yyj/musical/${s.musical_id}/" target="_blank" rel="noopener">剧目页 ↗</a>`:"";
       const buyCls=bought?"btn buy on":"btn buy";
       const buyTxt=bought?"取消已购":"标记已购";
@@ -538,10 +566,37 @@ function renderSchedule(){
           <div class="title">${s.musical}</div>
           <div class="meta">${role}${s.city} · ${s.stage}${t}</div>
         </div>
-        <div class="show-action">${status}<button class="${buyCls}" data-dt="${s.datetime}" data-m="${s.musical}" data-st="${s.stage||''}" data-sid="${s.stage_id||''}">${buyTxt}</button>${src}</div>
+        <div class="show-action">${status}${countdown}<button class="${buyCls}" data-dt="${s.datetime}" data-m="${s.musical}" data-st="${s.stage||''}" data-sid="${s.stage_id||''}">${buyTxt}</button>${src}</div>
       </div>`;
     });
   });
+  return html;
+}
+
+function renderSchedule(){
+  let list=getFiltered();
+  if(state.upcomingOnly){
+    list=[...list].sort((a,b)=>a.datetime.localeCompare(b.datetime));
+  }else{
+    list=[...list].sort((a,b)=>state.sortDesc
+      ? b.datetime.localeCompare(a.datetime) : a.datetime.localeCompare(b.datetime));
+  }
+  const box=document.getElementById("scheduleList");
+  const empty=document.getElementById("empty");
+  if(!list.length){box.innerHTML="";empty.hidden=false;return;}
+  empty.hidden=true;
+
+  const fut=list.filter(isFuture);
+  const past=list.filter(s=>!isFuture(s));
+  let html=renderShowGroup(fut);
+  if(past.length){
+    html+=`<div class="past-wrap">
+      <div class="past-header"><span class="line"></span>
+        <button class="fold-btn" id="pastFoldBtn"><span class="fold-label">已落幕</span><span class="fold-count">${past.length} 场</span><span class="fold-chev">▸</span></button>
+      <span class="line"></span></div>
+      <div class="past-body" id="pastBody">${renderShowGroup(past)}</div>
+    </div>`;
+  }
   box.innerHTML=html;
 
   // ⑤ 绑定已购按钮
@@ -557,9 +612,40 @@ function renderSchedule(){
       if(st){ st.className='status '+(on?'bought':(isFuture(s)?'future':'done'));
         st.textContent=on?'已购 ✓':(isFuture(s)?'即将开演':'已落幕'); }
       renderStats();
+      updateCountdowns();
     });
   });
+
+  // 已落幕展开
+  const pastBtn=document.getElementById('pastFoldBtn');
+  const pastBody=document.getElementById('pastBody');
+  if(pastBtn&&pastBody){
+    pastBtn.addEventListener('click',function(){
+      pastBody.classList.toggle('expanded');
+      const chev=pastBtn.querySelector('.fold-chev');
+      const expanded=pastBody.classList.contains('expanded');
+      if(chev) chev.style.transform=expanded?'rotate(90deg)':'rotate(0deg)';
+    });
+  }
+  updateCountdowns();
 }
+
+function fmtCountdown(ms){
+  if(ms<=0) return "即将开演";
+  const d=Math.floor(ms/86400000);
+  const h=Math.floor((ms%86400000)/3600000);
+  const m=Math.floor((ms%3600000)/60000);
+  const s=Math.floor((ms%60000)/1000);
+  if(d>0) return `距开演 ${d}天 ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  return `距开演 ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+function updateCountdowns(){
+  document.querySelectorAll('.countdown[data-dt]').forEach(function(el){
+    const ms=new Date(el.dataset.dt).getTime()-Date.now();
+    el.textContent=fmtCountdown(ms);
+  });
+}
+setInterval(updateCountdowns,1000);
 
 function renderRoles(){
   const map={};
@@ -571,6 +657,8 @@ function renderRoles(){
     if(s.city)o.cities.add(s.city);
   });
   const arr=Object.values(map).sort((a,b)=>b.count-a.count);
+  const countEl=document.getElementById("rolesCount");
+  if(countEl) countEl.textContent=arr.length?`（${arr.length} 个角色）`:"";
   document.getElementById("rolesGrid").innerHTML=arr.map(o=>{
     const firstMusical=[...o.musicals][0]||"";
     const citiesTxt=[...o.cities].slice(0,3).map(c=>`<span class="tg">${c}</span>`).join("")+(o.cities.size>3?` <span class="tg">+${o.cities.size-3}</span>`:"");
@@ -659,6 +747,12 @@ function bind(){
   document.getElementById("upcoming").addEventListener("change",e=>{
     state.upcomingOnly=e.target.checked; renderSchedule();
   });
+  // 角色卡折叠
+  const rolesBox=document.getElementById('rolesFoldBox');
+  const rolesBtn=document.getElementById('rolesFoldBtn');
+  if(rolesBox&&rolesBtn){
+    rolesBtn.addEventListener('click',()=>rolesBox.classList.toggle('collapsed'));
+  }
   const chartsSec=document.getElementById("charts");
   if('IntersectionObserver' in window){
     const io=new IntersectionObserver(function(es){
@@ -686,6 +780,13 @@ function init(){
   safe(bind,"bind");
 }
 init();
+
+/* PWA: 注册 Service Worker（file:// 协议会静默失败，不影响本地双击打开） */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  });
+}
 </script>
 </body>
 </html>

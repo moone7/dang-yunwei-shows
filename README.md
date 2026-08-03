@@ -5,6 +5,12 @@
 ## 在线预览
 https://moone7.github.io/dang-yunwei-shows/
 
+## 安装到桌面（PWA）
+本页已做成 PWA，支持在安卓 Chrome / iOS Safari / 桌面 Chrome 上「添加到主屏幕」：
+1. 用浏览器打开上方在线预览链接（必须是 `https://`，本地双击 `index.html` 不支持安装）。
+2. 安卓 Chrome：点击菜单 →「添加到主屏幕」；iOS Safari：底部分享按钮 →「添加到主屏幕」。
+3. 安装后桌面会生成一个月光图标，点击即可像 App 一样全屏打开，首次联网后会缓存页面，后续弱网/离线也能看排期。
+
 ## 本地使用
 - 查看：双击 `index.html`（自包含，无需联网）
 - 更新数据：`python dang_yunwei_scraper.py`

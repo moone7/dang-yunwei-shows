@@ -30,7 +30,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add shows.json index.html
+          git add shows.json index.html template.html manifest.webmanifest sw.js icon-192.png icon-512.png icon-maskable-512.png
           if git diff --cached --quiet; then
             echo "数据无变化，跳过提交"
           else
