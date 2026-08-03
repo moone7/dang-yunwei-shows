@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>党韫葳 · 演出排期 · 月光</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,10 +16,11 @@
     --accent:#9DB8E8; --accent-2:#C9D6EF;
     --glass:rgba(255,255,255,0.045); --glass-strong:rgba(255,255,255,0.07);
     --glass-border:rgba(255,255,255,0.10); --glow:rgba(157,184,232,0.45);
-    --future:#7fe7c4;
+    --future:#7fe7c4; --bought:#ffd27f;
     --font-serif:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
     --font-sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
     --font-en:"Cormorant Garamond","Noto Serif SC",serif;
+    --nav-h:64px;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -29,8 +30,9 @@
       radial-gradient(ellipse 80% 50% at 75% -10%, #1d295e 0%, transparent 55%),
       radial-gradient(ellipse 70% 60% at 15% 115%, #152552 0%, transparent 50%),
       linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 45%, var(--bg-0) 100%);
-    background-attachment:fixed; line-height:1.7; overflow-x:hidden;
+    background-attachment:fixed; line-height:1.65; overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
+    padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
   }
   .stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
   .star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.7;
@@ -39,169 +41,212 @@
 
   .wrap{max-width:1180px;margin:0 auto;padding:0 28px;position:relative;z-index:2;}
 
-  /* header */
+  /* header —— 仅品牌, 菜单移到底部 */
   header{position:fixed;top:0;left:0;width:100%;z-index:50;
     background:rgba(8,12,32,0.45);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-bottom:1px solid rgba(255,255,255,0.06);transition:background .4s ease;}
-  .nav{display:flex;align-items:center;justify-content:space-between;max-width:1180px;margin:0 auto;padding:16px 28px;}
+    border-bottom:1px solid rgba(255,255,255,0.06);}
+  .nav{display:flex;align-items:center;justify-content:space-between;max-width:1180px;margin:0 auto;padding:14px 28px;}
   .brand{display:flex;align-items:baseline;gap:12px;}
-  .brand .name{font-family:var(--font-serif);font-size:23px;font-weight:600;letter-spacing:2px;color:var(--silver);}
+  .brand .name{font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:2px;color:var(--silver);}
   .brand .role{font-size:11px;letter-spacing:3px;color:var(--text-3);text-transform:uppercase;font-family:var(--font-en);}
-  .menu{display:flex;gap:34px;}
-  .menu a{color:var(--text-2);text-decoration:none;font-size:14px;letter-spacing:2px;position:relative;padding:4px 0;transition:color .3s;}
-  .menu a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:linear-gradient(90deg,var(--accent),transparent);transition:width .35s ease;}
-  .menu a:hover{color:var(--silver);}
-  .menu a:hover::after{width:100%;}
+  .src-link{font-size:12px;letter-spacing:1px;color:var(--text-3);text-decoration:none;transition:color .3s;}
+  .src-link:hover{color:var(--silver);}
+
+  /* 底部固定导航 (需求⑥) */
+  .bottom-nav{position:fixed;left:50%;transform:translateX(-50%);
+    bottom:calc(14px + env(safe-area-inset-bottom, 0px));z-index:60;
+    display:flex;gap:4px;padding:7px;border-radius:999px;
+    background:rgba(10,15,38,0.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border:1px solid var(--glass-border);box-shadow:0 12px 40px -12px rgba(0,0,0,.6);max-width:calc(100vw - 28px);}
+  .bottom-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-width:62px;padding:7px 14px;border-radius:999px;text-decoration:none;color:var(--text-3);
+    font-size:12px;letter-spacing:2px;transition:all .3s ease;}
+  .bottom-nav a .ic{font-size:16px;line-height:1;margin-bottom:3px;}
+  .bottom-nav a.active{color:#0a0f26;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    box-shadow:0 0 18px rgba(157,184,232,.5);font-weight:500;}
+  .bottom-nav a:not(.active):hover{color:var(--silver);}
 
   /* hero */
-  .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;position:relative;padding:120px 28px 80px;}
-  .moon{position:absolute;top:12%;right:14%;width:240px;height:240px;border-radius:50%;
+  .hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;position:relative;padding:110px 28px 70px;}
+  .moon{position:absolute;top:12%;right:14%;width:220px;height:220px;border-radius:50%;
     background:radial-gradient(circle at 38% 35%, #ffffff 0%, #eef3fc 28%, #c9d6ef 62%, #9bb0dd 100%);
     box-shadow:0 0 70px 18px rgba(201,214,239,0.35),0 0 160px 50px rgba(157,184,232,0.22);
     animation:float 9s ease-in-out infinite;z-index:1;}
-  .moon::before{content:"";position:absolute;width:46px;height:46px;border-radius:50%;top:54px;left:60px;
+  .moon::before{content:"";position:absolute;width:42px;height:42px;border-radius:50%;top:50px;left:56px;
     background:radial-gradient(circle,rgba(155,176,221,0.35),transparent 70%);}
-  .moon::after{content:"";position:absolute;width:28px;height:28px;border-radius:50%;top:130px;left:150px;
+  .moon::after{content:"";position:absolute;width:26px;height:26px;border-radius:50%;top:120px;left:138px;
     background:radial-gradient(circle,rgba(155,176,221,0.30),transparent 70%);}
   @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-22px);}}
   .hero .eyebrow{font-family:var(--font-en);font-size:15px;letter-spacing:7px;color:var(--accent);
-    text-transform:uppercase;margin-bottom:26px;opacity:0;animation:rise 1s ease .2s forwards;}
-  .hero h1{font-family:var(--font-serif);font-weight:600;font-size:clamp(58px,11vw,108px);letter-spacing:8px;
+    text-transform:uppercase;margin-bottom:24px;opacity:0;animation:rise 1s ease .2s forwards;}
+  .hero h1{font-family:var(--font-serif);font-weight:600;font-size:clamp(52px,10vw,100px);letter-spacing:6px;
     color:var(--silver);line-height:1.05;text-shadow:0 0 50px rgba(201,214,239,0.35);
     opacity:0;animation:rise 1.1s ease .4s forwards;}
-  .hero .tagline{font-family:var(--font-serif);font-weight:300;font-size:clamp(17px,2.4vw,24px);
-    color:var(--moon-soft);letter-spacing:3px;margin-top:26px;opacity:0;animation:rise 1.1s ease .65s forwards;}
+  .hero .tagline{font-family:var(--font-serif);font-weight:300;font-size:clamp(16px,2.3vw,22px);
+    color:var(--moon-soft);letter-spacing:2px;margin-top:24px;opacity:0;animation:rise 1.1s ease .65s forwards;}
   .hero .season{font-family:var(--font-en);font-size:14px;letter-spacing:5px;color:var(--text-3);
-    margin-top:18px;text-transform:uppercase;opacity:0;animation:rise 1.1s ease .85s forwards;}
-  .scroll-hint{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
-    font-size:12px;letter-spacing:3px;color:var(--text-3);display:flex;flex-direction:column;align-items:center;gap:10px;
-    opacity:0;animation:rise 1.2s ease 1.1s forwards;}
-  .scroll-hint .line{width:1px;height:42px;background:linear-gradient(180deg,var(--accent),transparent);
-    animation:drop 2.2s ease-in-out infinite;}
-  @keyframes rise{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:translateY(0);}}
-  @keyframes drop{0%,100%{opacity:.3;transform:scaleY(.6);transform-origin:top;}50%{opacity:1;transform:scaleY(1);}}
+    margin-top:16px;text-transform:uppercase;opacity:0;animation:rise 1.1s ease .85s forwards;}
 
   /* section */
-  .sec{padding:110px 0;}
-  .sec-head{margin-bottom:46px;max-width:640px;}
+  .sec{padding:88px 0 20px;}
+  .sec-head{margin-bottom:38px;max-width:680px;}
   .sec-head .label{font-family:var(--font-en);font-size:13px;letter-spacing:6px;color:var(--accent);
-    text-transform:uppercase;display:block;margin-bottom:14px;}
-  .sec-head h2{font-family:var(--font-serif);font-weight:500;font-size:clamp(32px,5vw,46px);
-    letter-spacing:4px;color:var(--silver);}
-  .sec-head p{color:var(--text-2);font-size:15px;margin-top:16px;font-weight:400;}
+    text-transform:uppercase;display:block;margin-bottom:12px;}
+  .sec-head h2{font-family:var(--font-serif);font-weight:500;font-size:clamp(28px,4.5vw,42px);
+    letter-spacing:3px;color:var(--silver);}
+  .sec-head p{color:var(--text-2);font-size:15px;margin-top:14px;font-weight:400;}
 
-  /* reveal —— 默认可见, 仅在允许动画时隐藏淡入, 杜绝"全隐形" */
   .reveal{opacity:1;transform:none;}
   @media (prefers-reduced-motion:no-preference){
     .reveal{opacity:0;transform:translateY(34px);transition:opacity 1s ease,transform 1s ease;}
     .reveal.in{opacity:1;transform:none;}
   }
 
+  /* about (需求⑦) */
+  .about-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:34px;align-items:start;}
+  .bio{background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:28px 30px;
+    backdrop-filter:blur(8px);}
+  .bio .quote{font-family:var(--font-serif);font-size:16px;line-height:1.9;color:var(--text-1);font-weight:300;}
+  .bio .quote b{color:var(--moon-soft);font-weight:500;}
+  .bio .sub{margin-top:18px;font-size:13.5px;line-height:1.85;color:var(--text-2);}
+  .bio .tags{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;}
+  .bio .tags span{font-size:12px;color:var(--moon-soft);background:rgba(157,184,232,0.1);
+    border:1px solid var(--glass-border);padding:3px 11px;border-radius:999px;}
+  .bio .src{margin-top:18px;font-size:11.5px;color:var(--text-3);opacity:.85;}
+  .gallery{column-count:2;column-gap:14px;}
+  .gframe{break-inside:avoid;margin-bottom:14px;border-radius:14px;overflow:hidden;position:relative;
+    border:1px solid var(--glass-border);background:linear-gradient(160deg,#223066,#0c1230);}
+  .gframe .ph{height:0;}
+  .gframe .ovl{position:absolute;left:0;right:0;bottom:0;padding:12px 14px;
+    background:linear-gradient(180deg,transparent,rgba(7,11,31,.92));}
+  .gframe .ovl .gm{font-family:var(--font-serif);font-size:15px;color:var(--silver);letter-spacing:1px;}
+  .gframe .ovl .gr{font-size:11.5px;color:var(--accent);margin-top:2px;}
+  .gframe .ovl .gc{font-size:11px;color:var(--text-3);margin-top:1px;}
+  .gframe img{display:block;width:100%;height:auto;}
+  .gframe .placeholder-deco{position:absolute;top:14%;right:14%;width:46px;height:46px;border-radius:50%;
+    background:radial-gradient(circle at 38% 35%,#fff,#c9d6ef 60%,#9bb0dd);box-shadow:0 0 30px 7px rgba(201,214,239,.35);}
+
   /* controls */
-  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:28px;}
-  .controls input[type=text]{flex:1;min-width:200px;background:var(--glass);border:1px solid var(--glass-border);
-    color:var(--text-1);padding:11px 14px;border-radius:12px;font-size:14px;outline:none;backdrop-filter:blur(8px);}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:24px;}
+  .controls input[type=text]{flex:1;min-width:180px;background:var(--glass);border:1px solid var(--glass-border);
+    color:var(--text-1);padding:10px 13px;border-radius:12px;font-size:13.5px;outline:none;}
   .controls input[type=text]:focus{border-color:var(--accent);}
   .controls select{background:var(--glass);border:1px solid var(--glass-border);color:var(--text-1);
-    padding:11px 12px;border-radius:12px;font-size:14px;outline:none;backdrop-filter:blur(8px);}
+    padding:10px 11px;border-radius:12px;font-size:13.5px;outline:none;}
   .controls .pill{background:var(--glass);border:1px solid var(--glass-border);color:var(--text-1);
-    padding:11px 16px;border-radius:12px;font-size:14px;cursor:pointer;user-select:none;backdrop-filter:blur(8px);}
+    padding:10px 14px;border-radius:12px;font-size:13.5px;cursor:pointer;user-select:none;}
   .controls .chk{display:inline-flex;align-items:center;gap:7px;background:var(--glass);
-    border:1px solid var(--glass-border);color:var(--text-1);padding:11px 16px;border-radius:12px;font-size:14px;
-    cursor:pointer;user-select:none;backdrop-filter:blur(8px);}
+    border:1px solid var(--glass-border);color:var(--text-1);padding:10px 14px;border-radius:12px;font-size:13.5px;
+    cursor:pointer;user-select:none;}
   .controls .chk input{accent-color:var(--future);}
 
   /* stats */
-  .stats{display:flex;gap:42px;flex-wrap:wrap;margin-bottom:40px;}
-  .stats .num{font-family:var(--font-serif);font-size:34px;font-weight:500;color:var(--silver);}
-  .stats .num small{font-family:var(--font-en);font-size:18px;color:var(--accent);margin-left:2px;}
+  .stats{display:flex;gap:38px;flex-wrap:wrap;margin-bottom:34px;}
+  .stats .num{font-family:var(--font-serif);font-size:32px;font-weight:500;color:var(--silver);}
+  .stats .num small{font-family:var(--font-en);font-size:17px;color:var(--accent);margin-left:2px;}
   .stats .num.future{color:var(--future);}
+  .stats .num.bought{color:var(--bought);}
   .stats .cap{font-size:12px;letter-spacing:2px;color:var(--text-3);margin-top:4px;text-transform:uppercase;font-family:var(--font-en);}
 
-  /* schedule */
-  .schedule-list{display:flex;flex-direction:column;gap:18px;position:relative;}
-  .schedule-list::before{content:"";position:absolute;left:96px;top:14px;bottom:14px;width:1px;
+  /* schedule (需求④ 收紧 + 按钮不溢出) */
+  .schedule-list{display:flex;flex-direction:column;gap:14px;position:relative;}
+  .schedule-list::before{content:"";position:absolute;left:78px;top:12px;bottom:12px;width:1px;
     background:linear-gradient(180deg,transparent,var(--glass-border) 12%,var(--glass-border) 88%,transparent);}
-  .month-divider{font-family:var(--font-serif);font-size:15px;letter-spacing:4px;color:var(--text-3);
-    margin:26px 0 6px 0;padding-left:8px;border-left:2px solid var(--accent);}
-  .show{display:grid;grid-template-columns:150px 1fr auto;gap:28px;align-items:center;
-    background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:24px 30px;
+  .month-divider{font-family:var(--font-serif);font-size:14px;letter-spacing:4px;color:var(--text-3);
+    margin:20px 0 4px 0;padding-left:8px;border-left:2px solid var(--accent);}
+  .show{display:grid;grid-template-columns:130px 1fr auto;gap:22px;align-items:center;
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;padding:18px 24px;
     backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
     transition:transform .4s ease,border-color .4s ease,box-shadow .4s ease;}
   .show.future{border-color:rgba(127,231,196,0.4);box-shadow:0 14px 50px -22px rgba(127,231,196,0.4);}
-  .show:hover{transform:translateY(-4px);border-color:rgba(157,184,232,0.4);
+  .show.bought{border-color:rgba(255,210,127,0.35);}
+  .show:hover{transform:translateY(-3px);border-color:rgba(157,184,232,0.4);
     box-shadow:0 14px 50px -18px rgba(157,184,232,0.4);}
-  .show-date{text-align:center;position:relative;z-index:2;background:var(--bg-1);border-radius:12px;padding:10px 0;}
-  .show-date .day{font-family:var(--font-serif);font-size:42px;font-weight:500;color:var(--silver);line-height:1;}
-  .show-date .mon{font-family:var(--font-en);font-size:18px;letter-spacing:3px;color:var(--accent);margin-top:6px;}
-  .show-date .wk{font-size:12px;letter-spacing:2px;color:var(--text-3);margin-top:4px;}
-  .show-info .title{font-family:var(--font-serif);font-size:22px;font-weight:500;color:var(--silver);letter-spacing:1px;}
-  .show-info .meta{color:var(--text-2);font-size:14px;margin-top:8px;font-weight:400;}
+  .show-date{text-align:center;position:relative;z-index:2;background:var(--bg-1);border-radius:12px;padding:8px 0;}
+  .show-date .day{font-family:var(--font-serif);font-size:36px;font-weight:500;color:var(--silver);line-height:1;}
+  .show-date .mon{font-family:var(--font-en);font-size:16px;letter-spacing:2px;color:var(--accent);margin-top:4px;}
+  .show-date .wk{font-size:11.5px;letter-spacing:1px;color:var(--text-3);margin-top:3px;}
+  .show-info{min-width:0;}
+  .show-info .title{font-family:var(--font-serif);font-size:19px;font-weight:500;color:var(--silver);letter-spacing:.5px;}
+  .show-info .meta{color:var(--text-2);font-size:13.5px;margin-top:6px;font-weight:400;line-height:1.55;}
   .show-info .meta .role{color:var(--moon-soft);}
   .show-info .meta .t{color:var(--accent);}
-  .show-action{display:flex;flex-direction:column;align-items:flex-end;gap:12px;min-width:120px;}
-  .status{font-size:12px;letter-spacing:2px;padding:5px 14px;border-radius:999px;white-space:nowrap;}
-  .status.future{background:rgba(127,231,196,0.14);color:var(--future);border:1px solid rgba(127,231,196,0.4);box-shadow:0 0 18px rgba(127,231,196,0.25);}
+  .show-action{display:flex;flex-direction:column;align-items:flex-end;gap:9px;min-width:108px;}
+  .status{font-size:11.5px;letter-spacing:1.5px;padding:4px 12px;border-radius:999px;white-space:nowrap;}
+  .status.future{background:rgba(127,231,196,0.14);color:var(--future);border:1px solid rgba(127,231,196,0.4);}
   .status.done{background:rgba(110,124,160,0.08);color:var(--text-3);border:1px solid rgba(110,124,160,0.2);}
-  .btn{font-family:var(--font-sans);font-size:13px;letter-spacing:2px;color:var(--silver);
-    text-decoration:none;padding:9px 22px;border-radius:999px;border:1px solid rgba(201,214,239,0.35);
-    background:transparent;cursor:pointer;transition:all .35s ease;white-space:nowrap;}
+  .status.bought{background:rgba(255,210,127,0.14);color:var(--bought);border:1px solid rgba(255,210,127,0.4);}
+  .btn{font-family:var(--font-sans);font-size:12.5px;letter-spacing:1.5px;color:var(--silver);
+    text-decoration:none;padding:8px 18px;border-radius:999px;border:1px solid rgba(201,214,239,0.35);
+    background:transparent;cursor:pointer;transition:all .35s ease;white-space:nowrap;text-align:center;}
   .btn:hover{background:rgba(157,184,232,0.16);border-color:var(--accent);box-shadow:0 0 22px rgba(157,184,232,0.35);}
-  .empty{color:var(--text-2);text-align:center;padding:50px 0;font-family:var(--font-serif);letter-spacing:2px;}
+  .btn.buy{font-size:12px;padding:7px 16px;letter-spacing:1px;}
+  .btn.buy.on{background:rgba(255,210,127,0.16);border-color:var(--bought);color:var(--bought);}
+  .empty{color:var(--text-2);text-align:center;padding:44px 0;font-family:var(--font-serif);letter-spacing:2px;}
 
-  /* roles */
-  .repo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-  .card{background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;overflow:hidden;
+  /* roles (需求① 紧凑横向卡) */
+  .repo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .card{display:flex;align-items:center;gap:16px;background:var(--glass);border:1px solid var(--glass-border);
+    border-radius:14px;padding:14px 18px;overflow:hidden;
     transition:transform .4s ease,border-color .4s ease,box-shadow .4s ease;}
-  .card:hover{transform:translateY(-6px);border-color:rgba(157,184,232,0.4);
-    box-shadow:0 18px 55px -20px rgba(157,184,232,0.4);}
-  .card .poster{aspect-ratio:3/4;position:relative;
-    background:radial-gradient(circle at 50% 18%, #2c3a73 0%, #16204d 50%, #0a0f29 100%);}
-  .card .poster::after{content:"";position:absolute;top:18%;right:18%;width:54px;height:54px;border-radius:50%;
-    background:radial-gradient(circle at 38% 35%,#ffffff,#c9d6ef 60%,#9bb0dd);
-    box-shadow:0 0 34px 8px rgba(201,214,239,0.35);}
-  .card .poster .yr{position:absolute;bottom:14px;left:16px;font-family:var(--font-en);font-size:15px;letter-spacing:3px;color:var(--moon-soft);}
-  .card .body{padding:20px 22px 26px;}
-  .card .body .t{font-family:var(--font-serif);font-size:21px;font-weight:500;color:var(--silver);letter-spacing:1px;}
-  .card .body .c{font-size:13px;color:var(--accent);margin-top:6px;}
-  .card .body .r{font-size:12.5px;color:var(--text-2);margin-top:10px;font-weight:400;line-height:1.7;}
-  .card .body .r .tg{display:inline-block;color:var(--moon-soft);background:rgba(157,184,232,0.1);
-    border:1px solid var(--glass-border);padding:1px 8px;border-radius:6px;margin:2px 4px 2px 0;}
+  .card:hover{transform:translateY(-3px);border-color:rgba(157,184,232,0.4);
+    box-shadow:0 14px 45px -20px rgba(157,184,232,0.4);}
+  .card .badge{flex:0 0 auto;width:54px;height:54px;border-radius:12px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 30%,#2c3a73,#16204d 70%);border:1px solid var(--glass-border);}
+  .card .badge .cn{font-family:var(--font-serif);font-size:18px;font-weight:600;color:var(--silver);line-height:1;}
+  .card .badge .cc{font-family:var(--font-en);font-size:11px;color:var(--accent);margin-top:2px;}
+  .card .body{min-width:0;flex:1;}
+  .card .body .t{font-family:var(--font-serif);font-size:17px;font-weight:500;color:var(--silver);letter-spacing:.5px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .card .body .c{font-size:12px;color:var(--accent);margin-top:3px;}
+  .card .body .r{font-size:11.5px;color:var(--text-2);margin-top:5px;font-weight:400;line-height:1.5;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .card .body .r .tg{color:var(--moon-soft);}
 
   /* charts */
-  .chart-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:22px;margin-bottom:24px;
+  .chart-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:20px;margin-bottom:22px;
     backdrop-filter:blur(8px);}
-  .chart-card h3{font-family:var(--font-serif);font-size:18px;font-weight:500;margin-bottom:14px;letter-spacing:1px;color:var(--silver);}
-  .chart-card .canvas-box{position:relative;height:360px;}
-  .chart-note{color:var(--text-2);font-size:14px;text-align:center;padding:40px 0;font-weight:400;}
+  .chart-card h3{font-family:var(--font-serif);font-size:17px;font-weight:500;margin-bottom:12px;letter-spacing:1px;color:var(--silver);}
+  .chart-card .canvas-box{position:relative;height:340px;}
+  .chart-note{color:var(--text-2);font-size:14px;text-align:center;padding:36px 0;font-weight:400;}
 
   /* footer */
-  footer{position:relative;z-index:2;padding:80px 0 46px;margin-top:40px;
+  footer{position:relative;z-index:2;padding:70px 0 40px;margin-top:30px;
     border-top:1px solid rgba(255,255,255,0.06);text-align:center;}
-  footer .fmoon{width:120px;height:120px;border-radius:50%;margin:0 auto 30px;
+  footer .fmoon{width:110px;height:110px;border-radius:50%;margin:0 auto 26px;
     background:radial-gradient(circle at 38% 35%,#ffffff,#eef3fc 28%,#c9d6ef 62%,#9bb0dd 100%);
     box-shadow:0 0 60px 16px rgba(201,214,239,0.3),0 0 130px 44px rgba(157,184,232,0.18);opacity:.92;}
-  footer .fname{font-family:var(--font-serif);font-size:28px;letter-spacing:5px;color:var(--silver);}
-  footer .ftag{font-family:var(--font-en);font-size:14px;letter-spacing:4px;color:var(--text-3);margin-top:12px;text-transform:uppercase;}
-  footer .fnav{display:flex;gap:30px;justify-content:center;margin-top:28px;flex-wrap:wrap;}
+  footer .fname{font-family:var(--font-serif);font-size:26px;letter-spacing:5px;color:var(--silver);}
+  footer .ftag{font-family:var(--font-en);font-size:14px;letter-spacing:4px;color:var(--text-3);margin-top:10px;text-transform:uppercase;}
+  footer .fnav{display:flex;gap:26px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
   footer .fnav a{color:var(--text-2);text-decoration:none;font-size:13px;letter-spacing:2px;transition:color .3s;}
   footer .fnav a:hover{color:var(--silver);}
-  footer .copy{font-size:12px;color:var(--text-3);margin-top:34px;letter-spacing:1px;}
+  footer .copy{font-size:12px;color:var(--text-3);margin-top:30px;letter-spacing:1px;}
   footer .note{font-size:11px;color:var(--text-3);margin-top:8px;opacity:.7;}
 
   @media (max-width:880px){
-    .menu{display:none;}
-    .moon{width:160px;height:160px;top:9%;right:6%;}
-    .repo-grid{grid-template-columns:repeat(2,1fr);}
-    .schedule-list::before{left:74px;}
-    .show{grid-template-columns:118px 1fr;gap:18px;padding:22px 20px;}
-    .show-action{grid-column:1 / -1;flex-direction:row;align-items:center;justify-content:flex-start;margin-left:136px;}
+    .wrap{padding:0 18px;}
+    .nav{padding:12px 18px;}
+    .moon{width:150px;height:150px;top:8%;right:6%;}
+    .about-grid{grid-template-columns:1fr;gap:22px;}
+    .gallery{column-count:2;}
+    .repo-grid{grid-template-columns:1fr;}
+    .schedule-list::before{left:60px;}
+    .show{grid-template-columns:96px 1fr;gap:14px;padding:15px 16px;}
+    .show-date .day{font-size:30px;}
+    .show-info .title{font-size:17px;}
+    .show-action{grid-column:1 / -1;flex-direction:row;align-items:center;justify-content:flex-start;flex-wrap:wrap;margin-top:2px;}
+    .bottom-nav a{min-width:54px;padding:6px 11px;}
   }
   @media (max-width:560px){
-    .repo-grid{grid-template-columns:1fr;}
-    .stats{gap:28px;}
-    .show-date .day{font-size:34px;}
+    .stats{gap:22px;}
+    .stats .num{font-size:27px;}
+    .gallery{column-count:1;}
+    .show{grid-template-columns:80px 1fr;gap:12px;padding:13px 13px;}
+    .show-date{flex:0 0 auto;}
+    .show-action{gap:7px;}
   }
   @media (prefers-reduced-motion:reduce){
     *{animation:none !important;transition:none !important;}
@@ -218,11 +263,7 @@
         <span class="name" id="brandName">党韫葳</span>
         <span class="role">Musical Actress</span>
       </div>
-      <div class="menu">
-        <a href="#schedule">排期</a>
-        <a href="#roles">角色</a>
-        <a href="#charts">图表</a>
-      </div>
+      <a class="src-link" id="headSrc" href="#" target="_blank" rel="noopener">GitHub ↗</a>
     </nav>
   </header>
 
@@ -232,18 +273,36 @@
     <h1 id="heroName">党韫葳</h1>
     <div class="tagline">把每一句台词，唱成落在心上的月光</div>
     <div class="season">Under the Moonlight</div>
-    <div class="scroll-hint">
-      <span>下滑查看排期</span>
-      <span class="line"></span>
-    </div>
   </section>
 
   <main class="wrap">
+    <!-- ⑦ 关于 + 剧照 -->
+    <section class="sec" id="about">
+      <div class="sec-head reveal">
+        <span class="label">About</span>
+        <h2>关于党姐</h2>
+        <p>一束被月光浸过的声音，从上海音乐学院的琴房，走向一座座剧场。</p>
+      </div>
+      <div class="about-grid reveal">
+        <div class="bio">
+          <div class="quote">党韫葳，中国内地<b>音乐剧女演员</b>，毕业于<b>上海音乐学院音乐戏剧系</b>（本科及研究生），七幕人生签约资深音乐剧演员，曾任多部大型音乐剧女主角。</div>
+          <div class="sub">从 2014 年《上海滩》的方艳芸，到 2015 年《紫石街》的潘金莲，再到 2016–2017 年百老汇经典《音乐之声》中文版的玛利亚——她以温润而有力量的声线，把一个个角色唱成了观众记忆里的光。此后在《我，堂吉诃德》饰阿尔东莎、《放牛班的春天》饰维奥雷特等作品中持续绽放。</div>
+          <div class="tags">
+            <span>《音乐之声》玛利亚</span><span>《我，堂吉诃德》阿尔东莎</span>
+            <span>《放牛班的春天》维奥雷特</span><span>《上海滩》方艳芸</span>
+            <span>《紫石街》潘金莲</span><span>《四大美女》王昭君</span>
+          </div>
+          <div class="src">简介来源：百度百科 / 公开演出资料（节选整理）</div>
+        </div>
+        <div class="gallery" id="gallery"></div>
+      </div>
+    </section>
+
     <section class="sec" id="schedule">
       <div class="sec-head reveal">
         <span class="label">Performance Schedule</span>
         <h2>演出排期</h2>
-        <p>愿你在某个月夜，循着光走进剧场，听一段被温柔唱响的故事。</p>
+        <p>愿你在某个月夜，循着光走进剧场，听一段被温柔唱响的故事。<br/>提示：点「标记已购」可记录你买过的票，标记只存在本机浏览器，数据更新不会抹掉。</p>
       </div>
 
       <div class="controls reveal">
@@ -294,6 +353,7 @@
       <div class="fname" id="footName">党韫葳</div>
       <div class="ftag">Under the Moonlight</div>
       <div class="fnav">
+        <a href="#about">关于</a>
         <a href="#schedule">排期</a>
         <a href="#roles">角色</a>
         <a href="#charts">图表</a>
@@ -304,8 +364,19 @@
     </div>
   </footer>
 
+  <!-- ⑥ 底部固定导航 -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="#about" data-sec="about"><span class="ic">✦</span>关于</a>
+    <a href="#schedule" data-sec="schedule"><span class="ic">◷</span>排期</a>
+    <a href="#roles" data-sec="roles"><span class="ic">❖</span>角色</a>
+    <a href="#charts" data-sec="charts"><span class="ic">▦</span>图表</a>
+  </nav>
+
 <script>
 const SHOWS_DATA = {"artist": "党韫葳", "artist_id": 1538, "source": "https://y.saoju.net/yyj/artist/1538/show", "updated_at": "2026-08-03", "total": 314, "shows": [{"datetime": "2026-10-04T19:30", "date": "2026-10-04", "time": "19:30", "musical": "四大美女", "musical_id": null, "role": "王昭君", "city": "上海", "city_id": null, "stage": "上海黄浦剧场·中剧场", "stage_id": null, "manual": true, "note": "来源: 音乐剧《四大美女》官宣开票 (大麦/猫眼 2026-07-30 开票)，党韫葳饰王昭君"}, {"datetime": "2026-09-26T14:30", "date": "2026-09-26", "time": "14:30", "musical": "四大美女", "musical_id": null, "role": "王昭君", "city": "上海", "city_id": null, "stage": "上海黄浦剧场·中剧场", "stage_id": null, "manual": true, "note": "来源: 音乐剧《四大美女》官宣开票 (大麦/猫眼 2026-07-30 开票)，党韫葳饰王昭君"}, {"date": "2026-08-02", "time": "14:30", "musical": "女巫", "musical_id": 437, "role": "MARGARET", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2026-08-02T14:30"}, {"date": "2026-08-01", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2026-08-01T19:30"}, {"date": "2026-08-01", "time": "14:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2026-08-01T14:30"}, {"date": "2026-07-31", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "MARGARET", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2026-07-31T19:30"}, {"date": "2026-07-30", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2026-07-30T19:30"}, {"date": "2026-07-28", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2026-07-28T19:30"}, {"date": "2026-07-26", "time": "14:30", "musical": "女巫", "musical_id": 437, "role": "MARGARET", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2026-07-26T14:30"}, {"date": "2026-07-25", "time": "15:00", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "深圳", "city_id": 2, "stage": "万象天地剧场", "stage_id": 81, "datetime": "2026-07-25T15:00"}, {"date": "2026-07-19", "time": "14:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "佛山", "city_id": 33, "stage": "佛山琼花大剧院", "stage_id": 19, "datetime": "2026-07-19T14:30"}, {"date": "2026-07-18", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "佛山", "city_id": 33, "stage": "佛山琼花大剧院", "stage_id": 19, "datetime": "2026-07-18T19:30"}, {"date": "2026-07-16", "time": "19:30", "musical": "椒花颂声", "musical_id": 497, "role": "上官婉儿", "city": "上海", "city_id": 1, "stage": "曌剧场", "stage_id": 544, "datetime": "2026-07-16T19:30"}, {"date": "2026-07-11", "time": "14:00", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-07-11T14:00"}, {"date": "2026-07-10", "time": "19:30", "musical": "狐说臣与仙", "musical_id": 474, "role": "芸娘", "city": "上海", "city_id": 1, "stage": "交通银行前滩31演艺中心大剧场", "stage_id": 409, "datetime": "2026-07-10T19:30"}, {"date": "2026-07-09", "time": "19:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-07-09T19:30"}, {"date": "2026-07-05", "time": "14:00", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-07-05T14:00"}, {"date": "2026-07-04", "time": "19:30", "musical": "椒花颂声", "musical_id": 497, "role": "上官婉儿", "city": "上海", "city_id": 1, "stage": "曌剧场", "stage_id": 544, "datetime": "2026-07-04T19:30"}, {"date": "2026-07-03", "time": "19:30", "musical": "椒花颂声", "musical_id": 497, "role": "上官婉儿", "city": "上海", "city_id": 1, "stage": "曌剧场", "stage_id": 544, "datetime": "2026-07-03T19:30"}, {"date": "2026-06-28", "time": "14:00", "musical": "椒花颂声", "musical_id": 497, "role": "上官婉儿", "city": "上海", "city_id": 1, "stage": "曌剧场", "stage_id": 544, "datetime": "2026-06-28T14:00"}, {"date": "2026-06-27", "time": "19:30", "musical": "椒花颂声", "musical_id": 497, "role": "上官婉儿", "city": "上海", "city_id": 1, "stage": "曌剧场", "stage_id": 544, "datetime": "2026-06-27T19:30"}, {"date": "2026-06-27", "time": "14:00", "musical": "椒花颂声", "musical_id": 497, "role": "上官婉儿", "city": "上海", "city_id": 1, "stage": "曌剧场", "stage_id": 544, "datetime": "2026-06-27T14:00"}, {"date": "2026-06-26", "time": "19:30", "musical": "椒花颂声", "musical_id": 497, "role": "上官婉儿", "city": "上海", "city_id": 1, "stage": "曌剧场", "stage_id": 544, "datetime": "2026-06-26T19:30"}, {"date": "2026-06-25", "time": "19:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-06-25T19:30"}, {"date": "2026-06-20", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "西安", "city_id": 5, "stage": "西安广电大剧院", "stage_id": 107, "datetime": "2026-06-20T19:30"}, {"date": "2026-06-19", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "西安", "city_id": 5, "stage": "西安广电大剧院", "stage_id": 107, "datetime": "2026-06-19T19:30"}, {"date": "2026-06-13", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "天津", "city_id": 8, "stage": "中华剧院", "stage_id": 398, "datetime": "2026-06-13T19:30"}, {"date": "2026-06-12", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "天津", "city_id": 8, "stage": "中华剧院", "stage_id": 398, "datetime": "2026-06-12T19:30"}, {"date": "2026-06-06", "time": "14:30", "musical": "狐说臣与仙", "musical_id": 474, "role": "芸娘", "city": "北京", "city_id": 3, "stage": "北京保利剧院", "stage_id": 2, "datetime": "2026-06-06T14:30"}, {"date": "2026-05-30", "time": "21:00", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "乌鲁木齐", "city_id": 62, "stage": "乌鲁木齐大剧院观演厅", "stage_id": 308, "datetime": "2026-05-30T21:00"}, {"date": "2026-05-29", "time": "21:00", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "乌鲁木齐", "city_id": 62, "stage": "乌鲁木齐大剧院观演厅", "stage_id": 308, "datetime": "2026-05-29T21:00"}, {"date": "2026-05-23", "time": "15:00", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "兰州", "city_id": 86, "stage": "甘肃大剧院大剧场", "stage_id": 315, "datetime": "2026-05-23T15:00"}, {"date": "2026-05-22", "time": "20:00", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "兰州", "city_id": 86, "stage": "甘肃大剧院大剧场", "stage_id": 315, "datetime": "2026-05-22T20:00"}, {"date": "2026-05-17", "time": "19:30", "musical": "椒花颂声", "musical_id": 497, "role": "上官婉儿", "city": "上海", "city_id": 1, "stage": "曌剧场", "stage_id": 544, "datetime": "2026-05-17T19:30"}, {"date": "2026-04-23", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "艺海剧院小剧场", "stage_id": 505, "datetime": "2026-04-23T19:30"}, {"date": "2026-04-18", "time": "14:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "艺海剧院小剧场", "stage_id": 505, "datetime": "2026-04-18T14:30"}, {"date": "2026-04-15", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "艺海剧院小剧场", "stage_id": 505, "datetime": "2026-04-15T19:30"}, {"date": "2026-04-14", "time": "19:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2026-04-14T19:30"}, {"date": "2026-04-12", "time": "14:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "艺海剧院小剧场", "stage_id": 505, "datetime": "2026-04-12T14:30"}, {"date": "2026-04-11", "time": "14:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "艺海剧院小剧场", "stage_id": 505, "datetime": "2026-04-11T14:30"}, {"date": "2026-04-05", "time": "14:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "艺海剧院小剧场", "stage_id": 505, "datetime": "2026-04-05T14:30"}, {"date": "2026-04-04", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "艺海剧院小剧场", "stage_id": 505, "datetime": "2026-04-04T19:30"}, {"date": "2026-04-04", "time": "14:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2026-04-04T14:30"}, {"date": "2026-04-03", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "艺海剧院小剧场", "stage_id": 505, "datetime": "2026-04-03T19:30"}, {"date": "2026-03-29", "time": "16:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "哈尔滨", "city_id": 27, "stage": "哈尔滨大剧院歌剧厅", "stage_id": 113, "datetime": "2026-03-29T16:00"}, {"date": "2026-03-28", "time": "15:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "长春", "city_id": 89, "stage": "长春国际会议中心主会场", "stage_id": 336, "datetime": "2026-03-28T15:00"}, {"date": "2026-03-24", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "淮安", "city_id": 45, "stage": "淮安大剧院", "stage_id": 48, "datetime": "2026-03-24T19:30"}, {"date": "2026-03-20", "time": "20:00", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "深圳", "city_id": 2, "stage": "万象天地剧场", "stage_id": 81, "datetime": "2026-03-20T20:00"}, {"date": "2026-03-15", "time": "19:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2026-03-15T19:30"}, {"date": "2026-03-13", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "成都", "city_id": 10, "stage": "成都高新中演大剧院大剧场", "stage_id": 11, "datetime": "2026-03-13T19:30"}, {"date": "2026-03-08", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "杭州", "city_id": 4, "stage": "杭州东坡大剧院", "stage_id": 252, "datetime": "2026-03-08T19:30"}, {"date": "2026-03-07", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "杭州", "city_id": 4, "stage": "杭州东坡大剧院", "stage_id": 252, "datetime": "2026-03-07T19:30"}, {"date": "2026-03-01", "time": "14:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2026-03-01T14:30"}, {"date": "2026-02-07", "time": "15:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "杭州", "city_id": 4, "stage": "杭州东坡大剧院", "stage_id": 252, "datetime": "2026-02-07T15:00"}, {"date": "2026-02-05", "time": "19:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2026-02-05T19:30"}, {"date": "2026-01-31", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-01-31T19:30"}, {"date": "2026-01-29", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-01-29T19:30"}, {"date": "2026-01-28", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-01-28T19:30"}, {"date": "2026-01-25", "time": "19:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2026-01-25T19:30"}, {"date": "2026-01-25", "time": "14:00", "musical": "女巫", "musical_id": 437, "role": "MARGARET", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-01-25T14:00"}, {"date": "2026-01-24", "time": "14:00", "musical": "女巫", "musical_id": 437, "role": "MARGARET", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-01-24T14:00"}, {"date": "2026-01-22", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "MARGARET", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-01-22T19:30"}, {"date": "2026-01-21", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "MARGARET", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-01-21T19:30"}, {"date": "2026-01-18", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-01-18T19:30"}, {"date": "2026-01-16", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-01-16T19:30"}, {"date": "2026-01-14", "time": "19:30", "musical": "女巫", "musical_id": 437, "role": "ELSPETH", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2026-01-14T19:30"}, {"date": "2026-01-11", "time": "19:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2026-01-11T19:30"}, {"date": "2026-01-01", "time": "14:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2026-01-01T14:30"}, {"date": "2025-12-21", "time": "14:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "黄浦文化中心大上海新空间", "stage_id": 442, "datetime": "2025-12-21T14:30"}, {"date": "2025-12-20", "time": "14:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-12-20T14:30"}, {"date": "2025-12-14", "time": "14:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "黄浦文化中心大上海新空间", "stage_id": 442, "datetime": "2025-12-14T14:30"}, {"date": "2025-12-12", "time": "19:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "黄浦文化中心大上海新空间", "stage_id": 442, "datetime": "2025-12-12T19:30"}, {"date": "2025-12-07", "time": "14:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-12-07T14:30"}, {"date": "2025-12-05", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "深圳", "city_id": 2, "stage": "光明文化艺术中心 演艺中心大剧场", "stage_id": 143, "datetime": "2025-12-05T19:30"}, {"date": "2025-11-30", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "西安", "city_id": 5, "stage": "陕西大剧院歌剧厅", "stage_id": 97, "datetime": "2025-11-30T19:30"}, {"date": "2025-11-29", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "西安", "city_id": 5, "stage": "陕西大剧院歌剧厅", "stage_id": 97, "datetime": "2025-11-29T19:30"}, {"date": "2025-11-16", "time": "15:00", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "上海", "city_id": 1, "stage": "上海西岸大剧院大剧场", "stage_id": 422, "datetime": "2025-11-16T15:00"}, {"date": "2025-11-15", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "黄浦文化中心大上海新空间", "stage_id": 442, "datetime": "2025-11-15T19:30"}, {"date": "2025-11-09", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "黄浦文化中心大上海新空间", "stage_id": 442, "datetime": "2025-11-09T19:30"}, {"date": "2025-11-08", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "黄浦文化中心大上海新空间", "stage_id": 442, "datetime": "2025-11-08T19:30"}, {"date": "2025-11-07", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "南京", "city_id": 13, "stage": "南京保利大剧院大剧场", "stage_id": 15, "datetime": "2025-11-07T19:30"}, {"date": "2025-11-06", "time": "19:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "黄浦文化中心大上海新空间", "stage_id": 442, "datetime": "2025-11-06T19:30"}, {"date": "2025-10-26", "time": "14:30", "musical": "奇美拉", "musical_id": 414, "role": "窥梦人", "city": "上海", "city_id": 1, "stage": "黄浦文化中心大上海新空间", "stage_id": 442, "datetime": "2025-10-26T14:30"}, {"date": "2025-10-25", "time": "19:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-10-25T19:30"}, {"date": "2025-10-24", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "宁波", "city_id": 30, "stage": "宁波文化广场大剧院", "stage_id": 168, "datetime": "2025-10-24T19:30"}, {"date": "2025-10-19", "time": "14:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "北京", "city_id": 3, "stage": "天桥艺术中心小剧场", "stage_id": 148, "datetime": "2025-10-19T14:30"}, {"date": "2025-10-18", "time": "19:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "北京", "city_id": 3, "stage": "天桥艺术中心小剧场", "stage_id": 148, "datetime": "2025-10-18T19:30"}, {"date": "2025-10-12", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "苏州", "city_id": 14, "stage": "苏州保利大剧院大剧场", "stage_id": 188, "datetime": "2025-10-12T19:30"}, {"date": "2025-10-11", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "苏州", "city_id": 14, "stage": "苏州保利大剧院大剧场", "stage_id": 188, "datetime": "2025-10-11T19:30"}, {"date": "2025-10-07", "time": "17:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-10-07T17:00"}, {"date": "2025-10-05", "time": "19:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-10-05T19:30"}, {"date": "2025-10-02", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2025-10-02T19:30"}, {"date": "2025-09-28", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "成都", "city_id": 10, "stage": "成都城市音乐厅歌剧厅", "stage_id": 100, "datetime": "2025-09-28T19:30"}, {"date": "2025-09-27", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "成都", "city_id": 10, "stage": "成都城市音乐厅歌剧厅", "stage_id": 100, "datetime": "2025-09-27T19:30"}, {"date": "2025-09-24", "time": "20:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-09-24T20:00"}, {"date": "2025-09-20", "time": "15:00", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "深圳", "city_id": 2, "stage": "万象天地剧场", "stage_id": 81, "datetime": "2025-09-20T15:00"}, {"date": "2025-09-19", "time": "20:00", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "深圳", "city_id": 2, "stage": "万象天地剧场", "stage_id": 81, "datetime": "2025-09-19T20:00"}, {"date": "2025-09-14", "time": "15:00", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "广州", "city_id": 6, "stage": "广东艺术剧院", "stage_id": 175, "datetime": "2025-09-14T15:00"}, {"date": "2025-09-13", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "广州", "city_id": 6, "stage": "广东艺术剧院", "stage_id": 175, "datetime": "2025-09-13T19:30"}, {"date": "2025-09-06", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "广州", "city_id": 6, "stage": "广州蓓蕾剧院", "stage_id": 395, "datetime": "2025-09-06T19:30"}, {"date": "2025-09-05", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "广州", "city_id": 6, "stage": "广州蓓蕾剧院", "stage_id": 395, "datetime": "2025-09-05T19:30"}, {"date": "2025-08-31", "time": "14:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-08-31T14:00"}, {"date": "2025-08-27", "time": "20:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-08-27T20:00"}, {"date": "2025-08-26", "time": "20:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-08-26T20:00"}, {"date": "2025-08-23", "time": "14:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-08-23T14:30"}, {"date": "2025-08-22", "time": "20:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-08-22T20:00"}, {"date": "2025-08-17", "time": "14:30", "musical": "最美的一天", "musical_id": 48, "role": "许静雅", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2025-08-17T14:30"}, {"date": "2025-08-16", "time": "14:30", "musical": "最美的一天", "musical_id": 48, "role": "许静雅", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2025-08-16T14:30"}, {"date": "2025-08-15", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-08-15T20:00"}, {"date": "2025-08-14", "time": "19:30", "musical": "最美的一天", "musical_id": 48, "role": "许静雅", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2025-08-14T19:30"}, {"date": "2025-08-10", "time": "14:00", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2025-08-10T14:00"}, {"date": "2025-08-09", "time": "19:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2025-08-09T19:30"}, {"date": "2025-08-09", "time": "14:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2025-08-09T14:30"}, {"date": "2025-08-08", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2025-08-08T19:30"}, {"date": "2025-08-07", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "上剧场", "stage_id": 150, "datetime": "2025-08-07T19:30"}, {"date": "2025-08-06", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-08-06T19:30"}, {"date": "2025-08-03", "time": "17:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-08-03T17:00"}, {"date": "2025-08-02", "time": "19:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-08-02T19:30"}, {"date": "2025-08-01", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-08-01T19:30"}, {"date": "2025-07-31", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-07-31T19:30"}, {"date": "2025-07-27", "time": "19:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2025-07-27T19:30"}, {"date": "2025-07-26", "time": "19:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2025-07-26T19:30"}, {"date": "2025-07-24", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-07-24T19:30"}, {"date": "2025-07-22", "time": "20:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-07-22T20:00"}, {"date": "2025-07-19", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "天津", "city_id": 8, "stage": "天津大剧院歌剧厅", "stage_id": 98, "datetime": "2025-07-19T19:30"}, {"date": "2025-07-17", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-07-17T19:30"}, {"date": "2025-07-16", "time": "20:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-07-16T20:00"}, {"date": "2025-07-13", "time": "19:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-07-13T19:30"}, {"date": "2025-07-13", "time": "14:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-07-13T14:30"}, {"date": "2025-07-12", "time": "14:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-07-12T14:30"}, {"date": "2025-07-05", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-07-05T17:00"}, {"date": "2025-07-04", "time": "19:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-07-04T19:30"}, {"date": "2025-07-03", "time": "20:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-07-03T20:00"}, {"date": "2025-06-29", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-06-29T20:00"}, {"date": "2025-06-28", "time": "20:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-06-28T20:00"}, {"date": "2025-06-27", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-06-27T20:00"}, {"date": "2025-06-22", "time": "17:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-06-22T17:00"}, {"date": "2025-06-21", "time": "14:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-06-21T14:30"}, {"date": "2025-06-20", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-06-20T20:00"}, {"date": "2025-06-11", "time": "20:00", "musical": "海雾", "musical_id": 389, "role": "Jo", "city": "上海", "city_id": 1, "stage": "亚洲大厦·星空间黑匣子", "stage_id": 288, "datetime": "2025-06-11T20:00"}, {"date": "2025-06-08", "time": "14:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-06-08T14:30"}, {"date": "2025-05-30", "time": "19:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-05-30T19:30"}, {"date": "2025-05-28", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "石家庄", "city_id": 76, "stage": "河北省艺术中心大剧院", "stage_id": 275, "datetime": "2025-05-28T19:30"}, {"date": "2025-05-28", "time": "14:00", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "石家庄", "city_id": 76, "stage": "河北省艺术中心大剧院", "stage_id": 275, "datetime": "2025-05-28T14:00"}, {"date": "2025-05-25", "time": "14:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-05-25T14:30"}, {"date": "2025-05-24", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-05-24T20:00"}, {"date": "2025-05-18", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-05-18T17:00"}, {"date": "2025-05-17", "time": "19:30", "musical": "连璧", "musical_id": 379, "role": "谢宛宁", "city": "上海", "city_id": 1, "stage": "星空间407号·她剧场", "stage_id": 185, "datetime": "2025-05-17T19:30"}, {"date": "2025-05-10", "time": "14:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-05-10T14:30"}, {"date": "2025-05-09", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-05-09T20:00"}, {"date": "2025-05-06", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "上海", "city_id": 1, "stage": "上海文化广场主剧场", "stage_id": 1, "datetime": "2025-05-06T19:30"}, {"date": "2025-05-04", "time": "14:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-05-04T14:30"}, {"date": "2025-05-03", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-05-03T20:00"}, {"date": "2025-05-02", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-05-02T19:30"}, {"date": "2025-05-01", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-05-01T19:30"}, {"date": "2025-04-30", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-04-30T20:00"}, {"date": "2025-04-26", "time": "14:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-04-26T14:30"}, {"date": "2025-04-25", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-04-25T20:00"}, {"date": "2025-04-19", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "济南", "city_id": 15, "stage": "山东省会大剧院歌剧厅", "stage_id": 12, "datetime": "2025-04-19T19:30"}, {"date": "2025-04-18", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "济南", "city_id": 15, "stage": "山东省会大剧院歌剧厅", "stage_id": 12, "datetime": "2025-04-18T19:30"}, {"date": "2025-04-12", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "北京", "city_id": 3, "stage": "北京保利剧院", "stage_id": 2, "datetime": "2025-04-12T19:30"}, {"date": "2025-04-12", "time": "14:00", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "北京", "city_id": 3, "stage": "北京保利剧院", "stage_id": 2, "datetime": "2025-04-12T14:00"}, {"date": "2025-04-11", "time": "19:30", "musical": "寻找李二狗", "musical_id": 375, "role": "秀儿", "city": "北京", "city_id": 3, "stage": "北京保利剧院", "stage_id": 2, "datetime": "2025-04-11T19:30"}, {"date": "2025-02-23", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-02-23T19:30"}, {"date": "2025-02-21", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-02-21T19:30"}, {"date": "2025-02-15", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-02-15T20:00"}, {"date": "2025-02-12", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-02-12T20:00"}, {"date": "2025-02-09", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-02-09T17:00"}, {"date": "2025-02-03", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-02-03T19:30"}, {"date": "2025-01-19", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-01-19T17:00"}, {"date": "2025-01-10", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2025-01-10T19:30"}, {"date": "2025-01-04", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2025-01-04T20:00"}, {"date": "2024-12-31", "time": "22:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2024-12-31T22:30"}, {"date": "2024-12-29", "time": "19:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2024-12-29T19:30"}, {"date": "2024-12-21", "time": "14:30", "musical": "她对此感到厌烦", "musical_id": 358, "role": "辛西娅", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2024-12-21T14:30"}, {"date": "2024-12-14", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-12-14T20:00"}, {"date": "2024-11-30", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-11-30T20:00"}, {"date": "2024-11-16", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-11-16T17:00"}, {"date": "2024-11-09", "time": "14:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-11-09T14:30"}, {"date": "2024-11-08", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-11-08T19:30"}, {"date": "2024-11-07", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-11-07T19:30"}, {"date": "2024-11-03", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-11-03T19:30"}, {"date": "2024-11-03", "time": "14:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-11-03T14:30"}, {"date": "2024-11-02", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-11-02T19:30"}, {"date": "2024-11-02", "time": "14:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-11-02T14:30"}, {"date": "2024-11-01", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-11-01T19:30"}, {"date": "2024-10-27", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-10-27T19:30"}, {"date": "2024-10-27", "time": "14:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-10-27T14:30"}, {"date": "2024-10-26", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-10-26T19:30"}, {"date": "2024-10-26", "time": "14:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-10-26T14:30"}, {"date": "2024-10-25", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-10-25T19:30"}, {"date": "2024-10-12", "time": "19:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2024-10-12T19:30"}, {"date": "2024-10-07", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-10-07T17:00"}, {"date": "2024-10-05", "time": "20:00", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2024-10-05T20:00"}, {"date": "2024-10-04", "time": "20:00", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2024-10-04T20:00"}, {"date": "2024-10-04", "time": "14:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-10-04T14:00"}, {"date": "2024-10-03", "time": "13:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2024-10-03T13:30"}, {"date": "2024-10-01", "time": "13:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "黄浦剧场小剧场", "stage_id": 111, "datetime": "2024-10-01T13:30"}, {"date": "2024-09-28", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "上海", "city_id": 1, "stage": "上音歌剧院歌剧厅", "stage_id": 37, "datetime": "2024-09-28T19:30"}, {"date": "2024-09-27", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "上海", "city_id": 1, "stage": "上音歌剧院歌剧厅", "stage_id": 37, "datetime": "2024-09-27T19:30"}, {"date": "2024-09-23", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "上海", "city_id": 1, "stage": "上音歌剧院歌剧厅", "stage_id": 37, "datetime": "2024-09-23T19:30"}, {"date": "2024-09-22", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "上海", "city_id": 1, "stage": "上音歌剧院歌剧厅", "stage_id": 37, "datetime": "2024-09-22T19:30"}, {"date": "2024-09-21", "time": "14:00", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "上海", "city_id": 1, "stage": "上音歌剧院歌剧厅", "stage_id": 37, "datetime": "2024-09-21T14:00"}, {"date": "2024-09-20", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "上海", "city_id": 1, "stage": "上音歌剧院歌剧厅", "stage_id": 37, "datetime": "2024-09-20T19:30"}, {"date": "2024-09-17", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-09-17T17:00"}, {"date": "2024-09-13", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2024-09-13T19:30"}, {"date": "2024-08-24", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-08-24T17:00"}, {"date": "2024-08-17", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-08-17T20:00"}, {"date": "2024-08-01", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-08-01T19:30"}, {"date": "2024-07-30", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-07-30T19:30"}, {"date": "2024-07-24", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-07-24T19:30"}, {"date": "2024-07-22", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-07-22T19:30"}, {"date": "2024-07-16", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-07-16T19:30"}, {"date": "2024-06-26", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-06-26T19:30"}, {"date": "2024-06-18", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-06-18T19:30"}, {"date": "2024-06-09", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-06-09T20:00"}, {"date": "2024-05-15", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-05-15T19:30"}, {"date": "2024-05-04", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-05-04T17:00"}, {"date": "2024-05-01", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-05-01T17:00"}, {"date": "2024-04-19", "time": "19:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2024-04-19T19:30"}, {"date": "2024-04-17", "time": "19:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2024-04-17T19:30"}, {"date": "2024-04-16", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-04-16T19:30"}, {"date": "2024-04-13", "time": "14:00", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2024-04-13T14:00"}, {"date": "2024-04-12", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-04-12T20:00"}, {"date": "2024-04-09", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-04-09T19:30"}, {"date": "2024-04-06", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-04-06T17:00"}, {"date": "2024-04-05", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-04-05T17:00"}, {"date": "2024-04-04", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-04-04T17:00"}, {"date": "2024-03-30", "time": "19:30", "musical": "蝶变", "musical_id": 53, "role": "沈文君", "city": "上海", "city_id": 1, "stage": "上海话剧艺术中心D6空间", "stage_id": 152, "datetime": "2024-03-30T19:30"}, {"date": "2024-03-27", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-03-27T19:30"}, {"date": "2024-03-23", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-03-23T20:00"}, {"date": "2024-03-21", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-03-21T19:30"}, {"date": "2024-03-15", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-03-15T20:00"}, {"date": "2024-03-09", "time": "14:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "上海共舞台", "stage_id": 39, "datetime": "2024-03-09T14:30"}, {"date": "2024-03-07", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "上海共舞台", "stage_id": 39, "datetime": "2024-03-07T19:30"}, {"date": "2024-03-05", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "上海共舞台", "stage_id": 39, "datetime": "2024-03-05T19:30"}, {"date": "2024-03-02", "time": "14:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "上海共舞台", "stage_id": 39, "datetime": "2024-03-02T14:30"}, {"date": "2024-02-03", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-02-03T17:00"}, {"date": "2024-01-31", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-01-31T19:30"}, {"date": "2024-01-30", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-01-30T19:30"}, {"date": "2024-01-21", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-01-21T17:00"}, {"date": "2024-01-20", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-01-20T17:00"}, {"date": "2024-01-11", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-01-11T19:30"}, {"date": "2024-01-01", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2024-01-01T17:00"}, {"date": "2023-12-31", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-12-31T17:00"}, {"date": "2023-12-30", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-12-30T17:00"}, {"date": "2023-12-28", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-12-28T19:30"}, {"date": "2023-12-15", "time": "19:30", "musical": "唐人街探案1", "musical_id": 102, "role": "阿香", "city": "上海", "city_id": 1, "stage": "云峰剧院", "stage_id": 32, "datetime": "2023-12-15T19:30"}, {"date": "2023-12-14", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-12-14T19:30"}, {"date": "2023-12-12", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-12-12T19:30"}, {"date": "2023-12-09", "time": "19:30", "musical": "摇滚莫扎特", "musical_id": 105, "role": "阿洛伊西亚·韦伯", "city": "上海", "city_id": 1, "stage": "上海大剧院大剧场", "stage_id": 21, "datetime": "2023-12-09T19:30"}, {"date": "2023-12-08", "time": "19:30", "musical": "摇滚莫扎特", "musical_id": 105, "role": "阿洛伊西亚·韦伯", "city": "上海", "city_id": 1, "stage": "上海大剧院大剧场", "stage_id": 21, "datetime": "2023-12-08T19:30"}, {"date": "2023-12-06", "time": "19:30", "musical": "摇滚莫扎特", "musical_id": 105, "role": "阿洛伊西亚·韦伯", "city": "上海", "city_id": 1, "stage": "上海大剧院大剧场", "stage_id": 21, "datetime": "2023-12-06T19:30"}, {"date": "2023-12-03", "time": "19:30", "musical": "摇滚莫扎特", "musical_id": 105, "role": "阿洛伊西亚·韦伯", "city": "上海", "city_id": 1, "stage": "上海大剧院大剧场", "stage_id": 21, "datetime": "2023-12-03T19:30"}, {"date": "2023-12-02", "time": "19:30", "musical": "摇滚莫扎特", "musical_id": 105, "role": "阿洛伊西亚·韦伯", "city": "上海", "city_id": 1, "stage": "上海大剧院大剧场", "stage_id": 21, "datetime": "2023-12-02T19:30"}, {"date": "2023-12-01", "time": "19:30", "musical": "摇滚莫扎特", "musical_id": 105, "role": "阿洛伊西亚·韦伯", "city": "上海", "city_id": 1, "stage": "上海大剧院大剧场", "stage_id": 21, "datetime": "2023-12-01T19:30"}, {"date": "2023-11-28", "time": "19:30", "musical": "唐人街探案1", "musical_id": 102, "role": "阿香", "city": "上海", "city_id": 1, "stage": "云峰剧院", "stage_id": 32, "datetime": "2023-11-28T19:30"}, {"date": "2023-11-25", "time": "19:30", "musical": "唐人街探案1", "musical_id": 102, "role": "阿香", "city": "上海", "city_id": 1, "stage": "云峰剧院", "stage_id": 32, "datetime": "2023-11-25T19:30"}, {"date": "2023-11-23", "time": "19:30", "musical": "唐人街探案1", "musical_id": 102, "role": "阿香", "city": "上海", "city_id": 1, "stage": "云峰剧院", "stage_id": 32, "datetime": "2023-11-23T19:30"}, {"date": "2023-11-21", "time": "19:30", "musical": "唐人街探案1", "musical_id": 102, "role": "阿香", "city": "上海", "city_id": 1, "stage": "云峰剧院", "stage_id": 32, "datetime": "2023-11-21T19:30"}, {"date": "2023-11-18", "time": "19:30", "musical": "唐人街探案1", "musical_id": 102, "role": "阿香", "city": "上海", "city_id": 1, "stage": "云峰剧院", "stage_id": 32, "datetime": "2023-11-18T19:30"}, {"date": "2023-11-17", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-11-17T20:00"}, {"date": "2023-11-16", "time": "19:30", "musical": "唐人街探案1", "musical_id": 102, "role": "阿香", "city": "上海", "city_id": 1, "stage": "云峰剧院", "stage_id": 32, "datetime": "2023-11-16T19:30"}, {"date": "2023-11-15", "time": "19:30", "musical": "唐人街探案1", "musical_id": 102, "role": "阿香", "city": "上海", "city_id": 1, "stage": "云峰剧院", "stage_id": 32, "datetime": "2023-11-15T19:30"}, {"date": "2023-11-14", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-11-14T19:30"}, {"date": "2023-11-08", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-11-08T19:30"}, {"date": "2023-11-07", "time": "19:30", "musical": "唐人街探案1", "musical_id": 102, "role": "阿香", "city": "上海", "city_id": 1, "stage": "云峰剧院", "stage_id": 32, "datetime": "2023-11-07T19:30"}, {"date": "2023-11-04", "time": "14:30", "musical": "摇滚莫扎特", "musical_id": 105, "role": "阿洛伊西亚·韦伯", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2023-11-04T14:30"}, {"date": "2023-11-03", "time": "19:30", "musical": "摇滚莫扎特", "musical_id": 105, "role": "阿洛伊西亚·韦伯", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2023-11-03T19:30"}, {"date": "2023-10-22", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-10-22T19:30"}, {"date": "2023-10-21", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-10-21T19:30"}, {"date": "2023-10-19", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-10-19T19:30"}, {"date": "2023-10-17", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-10-17T19:30"}, {"date": "2023-10-15", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-10-15T19:30"}, {"date": "2023-10-13", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-10-13T19:30"}, {"date": "2023-09-30", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-09-30T19:30"}, {"date": "2023-09-29", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-09-29T19:30"}, {"date": "2023-09-28", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-09-28T19:30"}, {"date": "2023-09-27", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-09-27T19:30"}, {"date": "2023-09-26", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-09-26T19:30"}, {"date": "2023-09-24", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-09-24T19:30"}, {"date": "2023-09-23", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-09-23T19:30"}, {"date": "2023-09-22", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-09-22T19:30"}, {"date": "2023-09-21", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-09-21T19:30"}, {"date": "2023-09-19", "time": "19:30", "musical": "如果", "musical_id": 112, "role": "Mandy", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-09-19T19:30"}, {"date": "2023-09-17", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-09-17T20:00"}, {"date": "2023-09-02", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-09-02T20:00"}, {"date": "2023-09-01", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-09-01T19:30"}, {"date": "2023-08-26", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-08-26T20:00"}, {"date": "2023-08-25", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-08-25T20:00"}, {"date": "2023-08-19", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-08-19T20:00"}, {"date": "2023-08-18", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-08-18T20:00"}, {"date": "2023-08-12", "time": "20:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-08-12T20:00"}, {"date": "2023-08-11", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-08-11T19:30"}, {"date": "2023-08-04", "time": "17:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-08-04T17:00"}, {"date": "2023-08-01", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-08-01T19:30"}, {"date": "2023-07-30", "time": "14:00", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-07-30T14:00"}, {"date": "2023-07-28", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-07-28T19:30"}, {"date": "2023-07-15", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2023-07-15T19:30"}, {"date": "2023-07-15", "time": "14:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2023-07-15T14:30"}, {"date": "2023-07-14", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "北京", "city_id": 3, "stage": "二七剧场", "stage_id": 134, "datetime": "2023-07-14T19:30"}, {"date": "2023-07-08", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-07-08T19:30"}, {"date": "2023-07-06", "time": "19:30", "musical": "LIZZIE丽兹", "musical_id": 116, "role": "ALICE", "city": "上海", "city_id": 1, "stage": "星空间11号·MOriginal Box", "stage_id": 95, "datetime": "2023-07-06T19:30"}, {"date": "2023-06-18", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "上海", "city_id": 1, "stage": "上音歌剧院歌剧厅", "stage_id": 37, "datetime": "2023-06-18T19:30"}, {"date": "2023-06-17", "time": "19:30", "musical": "我，堂吉诃德", "musical_id": 3, "role": "阿尔东莎", "city": "上海", "city_id": 1, "stage": "上音歌剧院歌剧厅", "stage_id": 37, "datetime": "2023-06-17T19:30"}, {"date": "2023-05-28", "time": "19:30", "musical": "最美的一天", "musical_id": 48, "role": "许静雅", "city": "北京", "city_id": 3, "stage": "西区剧场", "stage_id": 132, "datetime": "2023-05-28T19:30"}, {"date": "2023-05-28", "time": "14:30", "musical": "最美的一天", "musical_id": 48, "role": "许静雅", "city": "北京", "city_id": 3, "stage": "西区剧场", "stage_id": 132, "datetime": "2023-05-28T14:30"}, {"date": "2023-05-27", "time": "19:30", "musical": "最美的一天", "musical_id": 48, "role": "许静雅", "city": "北京", "city_id": 3, "stage": "西区剧场", "stage_id": 132, "datetime": "2023-05-27T19:30"}, {"date": "2023-05-27", "time": "14:30", "musical": "最美的一天", "musical_id": 48, "role": "许静雅", "city": "北京", "city_id": 3, "stage": "西区剧场", "stage_id": 132, "datetime": "2023-05-27T14:30"}, {"date": "2023-05-26", "time": "19:30", "musical": "最美的一天", "musical_id": 48, "role": "许静雅", "city": "北京", "city_id": 3, "stage": "西区剧场", "stage_id": 132, "datetime": "2023-05-26T19:30"}, {"date": "2023-05-25", "time": "19:30", "musical": "最美的一天", "musical_id": 48, "role": "许静雅", "city": "北京", "city_id": 3, "stage": "西区剧场", "stage_id": 132, "datetime": "2023-05-25T19:30"}, {"date": "2023-05-24", "time": "19:30", "musical": "最美的一天", "musical_id": 48, "role": "许静雅", "city": "北京", "city_id": 3, "stage": "西区剧场", "stage_id": 132, "datetime": "2023-05-24T19:30"}, {"date": "2023-05-03", "time": "14:30", "musical": "宇宙大明星", "musical_id": 16, "role": "老板", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-05-03T14:30"}, {"date": "2023-05-01", "time": "14:30", "musical": "宇宙大明星", "musical_id": 16, "role": "老板", "city": "上海", "city_id": 1, "stage": "星空间8号·一台好戏方寸剧场", "stage_id": 77, "datetime": "2023-05-01T14:30"}]};
+
+// ⑦ 剧照：留空则用代表剧目生成风格化占位卡（提供真实图片地址即可自动填充）
+const PHOTOS = [];
 
 const NOW = new Date();
 const MON = {'01':'JAN','02':'FEB','03':'MAR','04':'APR','05':'MAY','06':'JUN','07':'JUL','08':'AUG','09':'SEP','10':'OCT','11':'NOV','12':'DEC'};
@@ -320,6 +391,25 @@ function uniq(arr){return [...new Set(arr)];}
 
 const state={sortDesc:true, upcomingOnly:false};
 let chartsDone=false;
+
+/* ⑤ 已购标记 —— 存本机浏览器 localStorage, key 稳定, 数据更新不抹除 */
+const KEY_NS="dyw_purchased_v1";
+const Purchased=(function(){
+  let mem=null; // 降级: localStorage 不可用(如 file://)时退回内存
+  function load(){
+    try{ const r=localStorage.getItem(KEY_NS); return r?JSON.parse(r):{}; }
+    catch(e){ return mem||(mem={}); }
+  }
+  function save(o){
+    try{ localStorage.setItem(KEY_NS, JSON.stringify(o)); }
+    catch(e){ mem=o; }
+  }
+  function keyOf(s){ return [s.datetime, s.musical, s.stage||s.stage_id||""].join("|"); }
+  return {
+    has(s){ return !!load()[keyOf(s)]; },
+    toggle(s){ const o=load(); const k=keyOf(s); if(o[k]){delete o[k];}else{o[k]=1;} save(o); return !!o[k]; }
+  };
+})();
 
 function safe(fn,label){ try{ fn(); }catch(e){ console.error('['+label+']',e); } }
 
@@ -345,8 +435,27 @@ function safe(fn,label){ try{ fn(); }catch(e){ console.error('['+label+']',e); }
     entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
   },{threshold:0.12});
   els.forEach(function(e){ io.observe(e); });
-  // 兜底: 1.5s 后强制显示, 杜绝任何观察器失效导致的隐形
   setTimeout(function(){ document.querySelectorAll('.reveal').forEach(function(e){ e.classList.add('in'); }); },1500);
+})();
+
+/* ⑥ 底部导航高亮 */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.bottom-nav a'));
+  var map={}; links.forEach(function(a){ map[a.dataset.sec]=a; });
+  if(!('IntersectionObserver' in window)){
+    links.forEach(function(a){a.classList.add('active');}); return;
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        links.forEach(function(a){a.classList.remove('active');});
+        var a=map[en.target.id]; if(a) a.classList.add('active');
+      }
+    });
+  },{rootMargin:"-45% 0px -45% 0px",threshold:0});
+  ['about','schedule','roles','charts'].forEach(function(id){
+    var el=document.getElementById(id); if(el) io.observe(el);
+  });
 })();
 
 function buildControls(){
@@ -367,6 +476,7 @@ function renderStats(){
     {n:uniq(shows.map(s=>s.city)).length,l:"走过城市",cls:""},
     {n:uniq(shows.map(s=>s.date.slice(0,7))).length,l:"活跃月",cls:""},
     {n:shows.filter(isFuture).length,l:"即将开演",cls:"future"},
+    {n:shows.filter(s=>Purchased.has(s)).length,l:"已购",cls:"bought"},
   ];
   document.getElementById("stats").innerHTML=cards.map(c=>
     `<div><div class="num ${c.cls}">${c.n}</div><div class="cap">${c.l}</div></div>`).join("");
@@ -414,19 +524,41 @@ function renderSchedule(){
       const t=s.time?` · <span class="t">${s.time}</span>`:"";
       const role=s.role?`<span class="role">${s.role}</span> · `:"";
       const fut=isFuture(s);
-      const status=fut?`<span class="status future">即将开演</span>`:`<span class="status done">已落幕</span>`;
+      const bought=Purchased.has(s);
+      let status;
+      if(bought) status=`<span class="status bought">已购 ✓</span>`;
+      else if(fut) status=`<span class="status future">即将开演</span>`;
+      else status=`<span class="status done">已落幕</span>`;
       const src=s.musical_id?`<a class="btn" href="https://y.saoju.net/yyj/musical/${s.musical_id}/" target="_blank" rel="noopener">剧目页 ↗</a>`:"";
-      html+=`<div class="show ${fut?'future':''}">
+      const buyCls=bought?"btn buy on":"btn buy";
+      const buyTxt=bought?"取消已购":"标记已购";
+      html+=`<div class="show ${fut?'future':''} ${bought?'bought':''}">
         <div class="show-date"><div class="day">${d.day}</div><div class="mon">${d.mon}</div><div class="wk">${d.wd}</div></div>
         <div class="show-info">
           <div class="title">${s.musical}</div>
           <div class="meta">${role}${s.city} · ${s.stage}${t}</div>
         </div>
-        <div class="show-action">${status}${src}</div>
+        <div class="show-action">${status}<button class="${buyCls}" data-dt="${s.datetime}" data-m="${s.musical}" data-st="${s.stage||''}" data-sid="${s.stage_id||''}">${buyTxt}</button>${src}</div>
       </div>`;
     });
   });
   box.innerHTML=html;
+
+  // ⑤ 绑定已购按钮
+  box.querySelectorAll('.btn.buy').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      const s={datetime:btn.dataset.dt, musical:btn.dataset.m, stage:btn.dataset.st, stage_id:btn.dataset.sid};
+      const on=Purchased.toggle(s);
+      btn.classList.toggle('on',on);
+      btn.textContent=on?"取消已购":"标记已购";
+      const card=btn.closest('.show');
+      if(card) card.classList.toggle('bought',on);
+      const st=card?card.querySelector('.status'):null;
+      if(st){ st.className='status '+(on?'bought':(isFuture(s)?'future':'done'));
+        st.textContent=on?'已购 ✓':(isFuture(s)?'即将开演':'已落幕'); }
+      renderStats();
+    });
+  });
 }
 
 function renderRoles(){
@@ -440,15 +572,42 @@ function renderRoles(){
   });
   const arr=Object.values(map).sort((a,b)=>b.count-a.count);
   document.getElementById("rolesGrid").innerHTML=arr.map(o=>{
-    const ms=[...o.musicals].map(m=>`<span class="tg">${m}</span>`).join("");
-    const cs=[...o.cities].map(c=>`<span class="tg">${c}</span>`).join("");
+    const firstMusical=[...o.musicals][0]||"";
+    const citiesTxt=[...o.cities].slice(0,3).map(c=>`<span class="tg">${c}</span>`).join("")+(o.cities.size>3?` <span class="tg">+${o.cities.size-3}</span>`:"");
+    const cn=o.role.slice(0,1);
     return `<div class="card">
-      <div class="poster"><span class="yr">${o.count} 场</span></div>
+      <div class="badge"><span class="cn">${cn}</span><span class="cc">${o.count}</span></div>
       <div class="body">
         <div class="t">${o.role}</div>
-        <div class="c">共 ${o.count} 场 · 演于 ${o.musicals.size} 部剧目</div>
-        <div class="r">${ms}${cs}</div>
+        <div class="c">${o.count} 场 · ${o.musicals.size} 部剧目</div>
+        <div class="r">${firstMusical} · 城 ${citiesTxt}</div>
       </div>
+    </div>`;
+  }).join("");
+}
+
+/* ⑦ 剧照墙: 用代表剧目(频次Top)生成错落风格卡; 若有真实图片则优先 */
+function renderGallery(){
+  const box=document.getElementById("gallery");
+  if(PHOTOS && PHOTOS.length){
+    box.innerHTML=PHOTOS.map(p=>{
+      const img=p.img?`<img src="${p.img}" alt="${p.musical||''}" loading="lazy"/>`:`<div class="placeholder-deco"></div>`;
+      return `<div class="gframe">${img}<div class="ovl"><div class="gm">${p.musical||''}</div>${p.role?`<div class="gr">${p.role}</div>`:''}${p.city?`<div class="gc">${p.city}</div>`:''}</div></div>`;
+    }).join("");
+    return;
+  }
+  const cnt={}; SHOWS_DATA.shows.forEach(s=>{ if(s.musical) cnt[s.musical]=(cnt[s.musical]||0)+1; });
+  const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  // 模拟高度错落
+  const heights=[140,180,150,200,160,190,150,175];
+  box.innerHTML=top.map((x,i)=>{
+    const musical=x[0];
+    const sample=SHOWS_DATA.shows.find(s=>s.musical===musical);
+    const role=sample&&sample.role?sample.role:"";
+    const city=sample&&sample.city?sample.city:"";
+    return `<div class="gframe" style="min-height:${heights[i%heights.length]}px">
+      <div class="placeholder-deco"></div>
+      <div class="ovl"><div class="gm">${musical}</div>${role?`<div class="gr">${role}</div>`:''}${city?`<div class="gc">${city} · ${x[1]}场</div>`:''}</div>
     </div>`;
   }).join("");
 }
@@ -500,7 +659,6 @@ function bind(){
   document.getElementById("upcoming").addEventListener("change",e=>{
     state.upcomingOnly=e.target.checked; renderSchedule();
   });
-  // 图表区进入视口时才渲染 (避免初始尺寸异常)
   const chartsSec=document.getElementById("charts");
   if('IntersectionObserver' in window){
     const io=new IntersectionObserver(function(es){
@@ -517,12 +675,14 @@ function init(){
   safe(()=>{document.getElementById("heroName").textContent=a;},"hero");
   safe(()=>{document.getElementById("footName").textContent=a;},"foot");
   safe(()=>{const fs=document.getElementById("footSrc"); fs.href=SHOWS_DATA.source||"#"; fs.textContent="数据来源 saoju.net";},"footsrc");
+  safe(()=>{const hs=document.getElementById("headSrc"); hs.href="https://github.com/moone7/dang-yunwei-shows";},"headsrc");
   safe(()=>{document.getElementById("footMeta").textContent=
     `数据更新于 ${SHOWS_DATA.updated_at} · 共 ${SHOWS_DATA.total} 场 · 来源 saoju.net`;},"footmeta");
   safe(buildControls,"controls");
   safe(renderStats,"stats");
   safe(renderSchedule,"schedule");
   safe(renderRoles,"roles");
+  safe(renderGallery,"gallery");
   safe(bind,"bind");
 }
 init();
