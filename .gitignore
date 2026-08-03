@@ -4,8 +4,10 @@
 
 # 临时/测试产物
 _push.py
+_push_pwa.py
 page1.html
 fetch_test.py
+__tmp_check.js
 __pycache__/
 *.pyc
 .DS_Store
