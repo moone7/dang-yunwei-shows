@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>党韫葳 · 演出排期 · 月光</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  :root{
+    --bg-0:#070B1F; --bg-1:#0C1230; --bg-2:#141C44;
+    --moon:#EEF3FC; --moon-soft:#C9D6EF; --silver:#EAF1FB;
+    --text-1:#F4F8FF; --text-2:#C7D2EA; --text-3:#9AA8CC;
+    --accent:#9DB8E8; --accent-2:#C9D6EF;
+    --glass:rgba(255,255,255,0.045); --glass-strong:rgba(255,255,255,0.07);
+    --glass-border:rgba(255,255,255,0.10); --glow:rgba(157,184,232,0.45);
+    --future:#7fe7c4;
+    --font-serif:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
+    --font-sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    --font-en:"Cormorant Garamond","Noto Serif SC",serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-sans); color:var(--text-1);
+    background:
+      radial-gradient(ellipse 80% 50% at 75% -10%, #1d295e 0%, transparent 55%),
+      radial-gradient(ellipse 70% 60% at 15% 115%, #152552 0%, transparent 50%),
+      linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 45%, var(--bg-0) 100%);
+    background-attachment:fixed; line-height:1.7; overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.7;
+    animation:twinkle 4s ease-in-out infinite;}
+  @keyframes twinkle{0%,100%{opacity:.15;transform:scale(.7);}50%{opacity:.9;transform:scale(1.15);}}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;position:relative;z-index:2;}
+
+  /* header */
+  header{position:fixed;top:0;left:0;width:100%;z-index:50;
+    background:rgba(8,12,32,0.45);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,0.06);transition:background .4s ease;}
+  .nav{display:flex;align-items:center;justify-content:space-between;max-width:1180px;margin:0 auto;padding:16px 28px;}
+  .brand{display:flex;align-items:baseline;gap:12px;}
+  .brand .name{font-family:var(--font-serif);font-size:23px;font-weight:600;letter-spacing:2px;color:var(--silver);}
+  .brand .role{font-size:11px;letter-spacing:3px;color:var(--text-3);text-transform:uppercase;font-family:var(--font-en);}
+  .menu{display:flex;gap:34px;}
+  .menu a{color:var(--text-2);text-decoration:none;font-size:14px;letter-spacing:2px;position:relative;padding:4px 0;transition:color .3s;}
+  .menu a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:linear-gradient(90deg,var(--accent),transparent);transition:width .35s ease;}
+  .menu a:hover{color:var(--silver);}
+  .menu a:hover::after{width:100%;}
+
+  /* hero */
+  .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;position:relative;padding:120px 28px 80px;}
+  .moon{position:absolute;top:12%;right:14%;width:240px;height:240px;border-radius:50%;
+    background:radial-gradient(circle at 38% 35%, #ffffff 0%, #eef3fc 28%, #c9d6ef 62%, #9bb0dd 100%);
+    box-shadow:0 0 70px 18px rgba(201,214,239,0.35),0 0 160px 50px rgba(157,184,232,0.22);
+    animation:float 9s ease-in-out infinite;z-index:1;}
+  .moon::before{content:"";position:absolute;width:46px;height:46px;border-radius:50%;top:54px;left:60px;
+    background:radial-gradient(circle,rgba(155,176,221,0.35),transparent 70%);}
+  .moon::after{content:"";position:absolute;width:28px;height:28px;border-radius:50%;top:130px;left:150px;
+    background:radial-gradient(circle,rgba(155,176,221,0.30),transparent 70%);}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-22px);}}
+  .hero .eyebrow{font-family:var(--font-en);font-size:15px;letter-spacing:7px;color:var(--accent);
+    text-transform:uppercase;margin-bottom:26px;opacity:0;animation:rise 1s ease .2s forwards;}
+  .hero h1{font-family:var(--font-serif);font-weight:600;font-size:clamp(58px,11vw,108px);letter-spacing:8px;
+    color:var(--silver);line-height:1.05;text-shadow:0 0 50px rgba(201,214,239,0.35);
+    opacity:0;animation:rise 1.1s ease .4s forwards;}
+  .hero .tagline{font-family:var(--font-serif);font-weight:300;font-size:clamp(17px,2.4vw,24px);
+    color:var(--moon-soft);letter-spacing:3px;margin-top:26px;opacity:0;animation:rise 1.1s ease .65s forwards;}
+  .hero .season{font-family:var(--font-en);font-size:14px;letter-spacing:5px;color:var(--text-3);
+    margin-top:18px;text-transform:uppercase;opacity:0;animation:rise 1.1s ease .85s forwards;}
+  .scroll-hint{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
+    font-size:12px;letter-spacing:3px;color:var(--text-3);display:flex;flex-direction:column;align-items:center;gap:10px;
+    opacity:0;animation:rise 1.2s ease 1.1s forwards;}
+  .scroll-hint .line{width:1px;height:42px;background:linear-gradient(180deg,var(--accent),transparent);
+    animation:drop 2.2s ease-in-out infinite;}
+  @keyframes rise{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes drop{0%,100%{opacity:.3;transform:scaleY(.6);transform-origin:top;}50%{opacity:1;transform:scaleY(1);}}
+
+  /* section */
+  .sec{padding:110px 0;}
+  .sec-head{margin-bottom:46px;max-width:640px;}
+  .sec-head .label{font-family:var(--font-en);font-size:13px;letter-spacing:6px;color:var(--accent);
+    text-transform:uppercase;display:block;margin-bottom:14px;}
+  .sec-head h2{font-family:var(--font-serif);font-weight:500;font-size:clamp(32px,5vw,46px);
+    letter-spacing:4px;color:var(--silver);}
+  .sec-head p{color:var(--text-2);font-size:15px;margin-top:16px;font-weight:400;}
+
+  /* reveal —— 默认可见, 仅在允许动画时隐藏淡入, 杜绝"全隐形" */
+  .reveal{opacity:1;transform:none;}
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{opacity:0;transform:translateY(34px);transition:opacity 1s ease,transform 1s ease;}
+    .reveal.in{opacity:1;transform:none;}
+  }
+
+  /* controls */
+  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:28px;}
+  .controls input[type=text]{flex:1;min-width:200px;background:var(--glass);border:1px solid var(--glass-border);
+    color:var(--text-1);padding:11px 14px;border-radius:12px;font-size:14px;outline:none;backdrop-filter:blur(8px);}
+  .controls input[type=text]:focus{border-color:var(--accent);}
+  .controls select{background:var(--glass);border:1px solid var(--glass-border);color:var(--text-1);
+    padding:11px 12px;border-radius:12px;font-size:14px;outline:none;backdrop-filter:blur(8px);}
+  .controls .pill{background:var(--glass);border:1px solid var(--glass-border);color:var(--text-1);
+    padding:11px 16px;border-radius:12px;font-size:14px;cursor:pointer;user-select:none;backdrop-filter:blur(8px);}
+  .controls .chk{display:inline-flex;align-items:center;gap:7px;background:var(--glass);
+    border:1px solid var(--glass-border);color:var(--text-1);padding:11px 16px;border-radius:12px;font-size:14px;
+    cursor:pointer;user-select:none;backdrop-filter:blur(8px);}
+  .controls .chk input{accent-color:var(--future);}
+
+  /* stats */
+  .stats{display:flex;gap:42px;flex-wrap:wrap;margin-bottom:40px;}
+  .stats .num{font-family:var(--font-serif);font-size:34px;font-weight:500;color:var(--silver);}
+  .stats .num small{font-family:var(--font-en);font-size:18px;color:var(--accent);margin-left:2px;}
+  .stats .num.future{color:var(--future);}
+  .stats .cap{font-size:12px;letter-spacing:2px;color:var(--text-3);margin-top:4px;text-transform:uppercase;font-family:var(--font-en);}
+
+  /* schedule */
+  .schedule-list{display:flex;flex-direction:column;gap:18px;position:relative;}
+  .schedule-list::before{content:"";position:absolute;left:96px;top:14px;bottom:14px;width:1px;
+    background:linear-gradient(180deg,transparent,var(--glass-border) 12%,var(--glass-border) 88%,transparent);}
+  .month-divider{font-family:var(--font-serif);font-size:15px;letter-spacing:4px;color:var(--text-3);
+    margin:26px 0 6px 0;padding-left:8px;border-left:2px solid var(--accent);}
+  .show{display:grid;grid-template-columns:150px 1fr auto;gap:28px;align-items:center;
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:24px 30px;
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    transition:transform .4s ease,border-color .4s ease,box-shadow .4s ease;}
+  .show.future{border-color:rgba(127,231,196,0.4);box-shadow:0 14px 50px -22px rgba(127,231,196,0.4);}
+  .show:hover{transform:translateY(-4px);border-color:rgba(157,184,232,0.4);
+    box-shadow:0 14px 50px -18px rgba(157,184,232,0.4);}
+  .show-date{text-align:center;position:relative;z-index:2;background:var(--bg-1);border-radius:12px;padding:10px 0;}
+  .show-date .day{font-family:var(--font-serif);font-size:42px;font-weight:500;color:var(--silver);line-height:1;}
+  .show-date .mon{font-family:var(--font-en);font-size:18px;letter-spacing:3px;color:var(--accent);margin-top:6px;}
+  .show-date .wk{font-size:12px;letter-spacing:2px;color:var(--text-3);margin-top:4px;}
+  .show-info .title{font-family:var(--font-serif);font-size:22px;font-weight:500;color:var(--silver);letter-spacing:1px;}
+  .show-info .meta{color:var(--text-2);font-size:14px;margin-top:8px;font-weight:400;}
+  .show-info .meta .role{color:var(--moon-soft);}
+  .show-info .meta .t{color:var(--accent);}
+  .show-action{display:flex;flex-direction:column;align-items:flex-end;gap:12px;min-width:120px;}
+  .status{font-size:12px;letter-spacing:2px;padding:5px 14px;border-radius:999px;white-space:nowrap;}
+  .status.future{background:rgba(127,231,196,0.14);color:var(--future);border:1px solid rgba(127,231,196,0.4);box-shadow:0 0 18px rgba(127,231,196,0.25);}
+  .status.done{background:rgba(110,124,160,0.08);color:var(--text-3);border:1px solid rgba(110,124,160,0.2);}
+  .btn{font-family:var(--font-sans);font-size:13px;letter-spacing:2px;color:var(--silver);
+    text-decoration:none;padding:9px 22px;border-radius:999px;border:1px solid rgba(201,214,239,0.35);
+    background:transparent;cursor:pointer;transition:all .35s ease;white-space:nowrap;}
+  .btn:hover{background:rgba(157,184,232,0.16);border-color:var(--accent);box-shadow:0 0 22px rgba(157,184,232,0.35);}
+  .empty{color:var(--text-2);text-align:center;padding:50px 0;font-family:var(--font-serif);letter-spacing:2px;}
+
+  /* roles */
+  .repo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .card{background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;overflow:hidden;
+    transition:transform .4s ease,border-color .4s ease,box-shadow .4s ease;}
+  .card:hover{transform:translateY(-6px);border-color:rgba(157,184,232,0.4);
+    box-shadow:0 18px 55px -20px rgba(157,184,232,0.4);}
+  .card .poster{aspect-ratio:3/4;position:relative;
+    background:radial-gradient(circle at 50% 18%, #2c3a73 0%, #16204d 50%, #0a0f29 100%);}
+  .card .poster::after{content:"";position:absolute;top:18%;right:18%;width:54px;height:54px;border-radius:50%;
+    background:radial-gradient(circle at 38% 35%,#ffffff,#c9d6ef 60%,#9bb0dd);
+    box-shadow:0 0 34px 8px rgba(201,214,239,0.35);}
+  .card .poster .yr{position:absolute;bottom:14px;left:16px;font-family:var(--font-en);font-size:15px;letter-spacing:3px;color:var(--moon-soft);}
+  .card .body{padding:20px 22px 26px;}
+  .card .body .t{font-family:var(--font-serif);font-size:21px;font-weight:500;color:var(--silver);letter-spacing:1px;}
+  .card .body .c{font-size:13px;color:var(--accent);margin-top:6px;}
+  .card .body .r{font-size:12.5px;color:var(--text-2);margin-top:10px;font-weight:400;line-height:1.7;}
+  .card .body .r .tg{display:inline-block;color:var(--moon-soft);background:rgba(157,184,232,0.1);
+    border:1px solid var(--glass-border);padding:1px 8px;border-radius:6px;margin:2px 4px 2px 0;}
+
+  /* charts */
+  .chart-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:22px;margin-bottom:24px;
+    backdrop-filter:blur(8px);}
+  .chart-card h3{font-family:var(--font-serif);font-size:18px;font-weight:500;margin-bottom:14px;letter-spacing:1px;color:var(--silver);}
+  .chart-card .canvas-box{position:relative;height:360px;}
+  .chart-note{color:var(--text-2);font-size:14px;text-align:center;padding:40px 0;font-weight:400;}
+
+  /* footer */
+  footer{position:relative;z-index:2;padding:80px 0 46px;margin-top:40px;
+    border-top:1px solid rgba(255,255,255,0.06);text-align:center;}
+  footer .fmoon{width:120px;height:120px;border-radius:50%;margin:0 auto 30px;
+    background:radial-gradient(circle at 38% 35%,#ffffff,#eef3fc 28%,#c9d6ef 62%,#9bb0dd 100%);
+    box-shadow:0 0 60px 16px rgba(201,214,239,0.3),0 0 130px 44px rgba(157,184,232,0.18);opacity:.92;}
+  footer .fname{font-family:var(--font-serif);font-size:28px;letter-spacing:5px;color:var(--silver);}
+  footer .ftag{font-family:var(--font-en);font-size:14px;letter-spacing:4px;color:var(--text-3);margin-top:12px;text-transform:uppercase;}
+  footer .fnav{display:flex;gap:30px;justify-content:center;margin-top:28px;flex-wrap:wrap;}
+  footer .fnav a{color:var(--text-2);text-decoration:none;font-size:13px;letter-spacing:2px;transition:color .3s;}
+  footer .fnav a:hover{color:var(--silver);}
+  footer .copy{font-size:12px;color:var(--text-3);margin-top:34px;letter-spacing:1px;}
+  footer .note{font-size:11px;color:var(--text-3);margin-top:8px;opacity:.7;}
+
+  @media (max-width:880px){
+    .menu{display:none;}
+    .moon{width:160px;height:160px;top:9%;right:6%;}
+    .repo-grid{grid-template-columns:repeat(2,1fr);}
+    .schedule-list::before{left:74px;}
+    .show{grid-template-columns:118px 1fr;gap:18px;padding:22px 20px;}
+    .show-action{grid-column:1 / -1;flex-direction:row;align-items:center;justify-content:flex-start;margin-left:136px;}
+  }
+  @media (max-width:560px){
+    .repo-grid{grid-template-columns:1fr;}
+    .stats{gap:28px;}
+    .show-date .day{font-size:34px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important;}
+    .reveal{opacity:1;transform:none;}
+  }
+</style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+
+  <header>
+    <nav class="nav">
+      <div class="brand">
+        <span class="name" id="brandName">党韫葳</span>
+        <span class="role">Musical Actress</span>
+      </div>
+      <div class="menu">
+        <a href="#schedule">排期</a>
+        <a href="#roles">角色</a>
+        <a href="#charts">图表</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="moon"></div>
+    <div class="eyebrow">Musical Theatre · 演出档案</div>
+    <h1 id="heroName">党韫葳</h1>
+    <div class="tagline">把每一句台词，唱成落在心上的月光</div>
+    <div class="season">Under the Moonlight</div>
+    <div class="scroll-hint">
+      <span>下滑查看排期</span>
+      <span class="line"></span>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <section class="sec" id="schedule">
+      <div class="sec-head reveal">
+        <span class="label">Performance Schedule</span>
+        <h2>演出排期</h2>
+        <p>愿你在某个月夜，循着光走进剧场，听一段被温柔唱响的故事。</p>
+      </div>
+
+      <div class="controls reveal">
+        <input id="search" type="text" placeholder="搜索剧目 / 角色 / 城市 / 剧院…" />
+        <select id="fMusical"><option value="">全部剧目</option></select>
+        <select id="fCity"><option value="">全部城市</option></select>
+        <select id="fYear"><option value="">全部年份</option></select>
+        <button class="pill" id="sortBtn">↓ 最新优先</button>
+        <label class="chk"><input type="checkbox" id="upcoming" /> 只看即将开演</label>
+      </div>
+
+      <div class="stats" id="stats"></div>
+
+      <div class="schedule-list" id="scheduleList"></div>
+      <div class="empty" id="empty" hidden>没有匹配的演出，换个筛选条件试试。</div>
+    </section>
+
+    <section class="sec" id="roles">
+      <div class="sec-head reveal">
+        <span class="label">Roles</span>
+        <h2>角色档案</h2>
+        <p>那些被月光浸过的角色，一一在记忆里亮着。</p>
+      </div>
+      <div class="repo-grid" id="rolesGrid"></div>
+    </section>
+
+    <section class="sec" id="charts">
+      <div class="sec-head reveal">
+        <span class="label">Statistics</span>
+        <h2>数据图表</h2>
+        <p>以光为尺，丈量走过的每一座城、每一部戏。</p>
+      </div>
+      <div class="chart-card">
+        <h3>剧目演出频次（Top 12）</h3>
+        <div class="canvas-box"><canvas id="musicalChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>城市分布</h3>
+        <div class="canvas-box"><canvas id="cityChart"></canvas></div>
+      </div>
+      <div class="chart-note" id="chartNote" hidden></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="fmoon"></div>
+      <div class="fname" id="footName">党韫葳</div>
+      <div class="ftag">Under the Moonlight</div>
+      <div class="fnav">
+        <a href="#schedule">排期</a>
+        <a href="#roles">角色</a>
+        <a href="#charts">图表</a>
+        <a id="footSrc" href="#" target="_blank" rel="noopener">数据来源</a>
+      </div>
+      <div class="copy" id="footMeta"></div>
+      <div class="note">本页本地离线生成 · 数据全程不出本机 · 重新运行抓取脚本即可更新</div>
+    </div>
+  </footer>
+
+<script>
+const SHOWS_DATA = /*SHOWS_JSON*/ null;
+
+const NOW = new Date();
+const MON = {'01':'JAN','02':'FEB','03':'MAR','04':'APR','05':'MAY','06':'JUN','07':'JUL','08':'AUG','09':'SEP','10':'OCT','11':'NOV','12':'DEC'};
+const WEEK = ["周日","周一","周二","周三","周四","周五","周六"];
+function isFuture(s){ return new Date(s.datetime).getTime() >= NOW.getTime(); }
+function fmtDate(d){
+  const [y,m,day]=d.split("-").map(Number);
+  const wd=WEEK[new Date(y,m-1,day).getDay()];
+  return {day:String(day).padStart(2,'0'), mon:MON[String(m).padStart(2,'0')], wd};
+}
+function uniq(arr){return [...new Set(arr)];}
+
+const state={sortDesc:true, upcomingOnly:false};
+let chartsDone=false;
+
+function safe(fn,label){ try{ fn(); }catch(e){ console.error('['+label+']',e); } }
+
+/* starfield */
+(function(){
+  var c=document.getElementById('stars');
+  var n=window.innerWidth<700?60:110;
+  for(var i=0;i<n;i++){
+    var s=document.createElement('span'); s.className='star';
+    s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%';
+    var sz=Math.random()*1.6+0.6; s.style.width=sz+'px'; s.style.height=sz+'px';
+    s.style.animationDelay=(Math.random()*4)+'s'; s.style.animationDuration=(3+Math.random()*4)+'s';
+    c.appendChild(s);
+  }
+})();
+
+/* reveal (safe) */
+(function(){
+  if(!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){ els.forEach(function(e){e.classList.add('in');}); return; }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  },{threshold:0.12});
+  els.forEach(function(e){ io.observe(e); });
+  // 兜底: 1.5s 后强制显示, 杜绝任何观察器失效导致的隐形
+  setTimeout(function(){ document.querySelectorAll('.reveal').forEach(function(e){ e.classList.add('in'); }); },1500);
+})();
+
+function buildControls(){
+  const musicals=uniq(SHOWS_DATA.shows.map(s=>s.musical)).sort();
+  const cities=uniq(SHOWS_DATA.shows.map(s=>s.city)).sort();
+  const years=uniq(SHOWS_DATA.shows.map(s=>s.date.slice(0,4))).sort();
+  const mSel=document.getElementById("fMusical"), cSel=document.getElementById("fCity"), ySel=document.getElementById("fYear");
+  musicals.forEach(m=>mSel.add(new Option(m,m)));
+  cities.forEach(c=>cSel.add(new Option(c,c)));
+  years.forEach(y=>ySel.add(new Option(y,y)));
+}
+
+function renderStats(){
+  const shows=SHOWS_DATA.shows;
+  const cards=[
+    {n:shows.length,l:"总场次",cls:""},
+    {n:uniq(shows.map(s=>s.musical)).length,l:"参演剧目",cls:""},
+    {n:uniq(shows.map(s=>s.city)).length,l:"走过城市",cls:""},
+    {n:uniq(shows.map(s=>s.date.slice(0,7))).length,l:"活跃月",cls:""},
+    {n:shows.filter(isFuture).length,l:"即将开演",cls:"future"},
+  ];
+  document.getElementById("stats").innerHTML=cards.map(c=>
+    `<div><div class="num ${c.cls}">${c.n}</div><div class="cap">${c.l}</div></div>`).join("");
+}
+
+function getFiltered(){
+  const q=document.getElementById("search").value.trim().toLowerCase();
+  const fm=document.getElementById("fMusical").value;
+  const fc=document.getElementById("fCity").value;
+  const fy=document.getElementById("fYear").value;
+  let list=SHOWS_DATA.shows.filter(s=>{
+    if(fm&&s.musical!==fm)return false;
+    if(fc&&s.city!==fc)return false;
+    if(fy&&s.date.slice(0,4)!==fy)return false;
+    if(q){const hay=(s.musical+s.role+s.city+s.stage).toLowerCase();if(!hay.includes(q))return false;}
+    return true;
+  });
+  if(state.upcomingOnly) list=list.filter(isFuture);
+  return list;
+}
+
+function renderSchedule(){
+  let list=getFiltered();
+  if(state.upcomingOnly){
+    list=[...list].sort((a,b)=>a.datetime.localeCompare(b.datetime));
+  }else{
+    list=[...list].sort((a,b)=>state.sortDesc
+      ? b.datetime.localeCompare(a.datetime) : a.datetime.localeCompare(b.datetime));
+  }
+  const box=document.getElementById("scheduleList");
+  const empty=document.getElementById("empty");
+  if(!list.length){box.innerHTML="";empty.hidden=false;return;}
+  empty.hidden=true;
+
+  const groups={};
+  list.forEach(s=>{const k=s.date.slice(0,7);(groups[k]=groups[k]||[]).push(s);});
+  const keys=Object.keys(groups).sort((a,b)=>state.sortDesc&&!state.upcomingOnly?b.localeCompare(a):a.localeCompare(b));
+
+  let html="";
+  keys.forEach(k=>{
+    const [y,m]=k.split("-");
+    html+=`<div class="month-divider">${y} 年 ${parseInt(m,10)} 月</div>`;
+    groups[k].forEach(s=>{
+      const d=fmtDate(s.date);
+      const t=s.time?` · <span class="t">${s.time}</span>`:"";
+      const role=s.role?`<span class="role">${s.role}</span> · `:"";
+      const fut=isFuture(s);
+      const status=fut?`<span class="status future">即将开演</span>`:`<span class="status done">已落幕</span>`;
+      const src=s.musical_id?`<a class="btn" href="https://y.saoju.net/yyj/musical/${s.musical_id}/" target="_blank" rel="noopener">剧目页 ↗</a>`:"";
+      html+=`<div class="show ${fut?'future':''}">
+        <div class="show-date"><div class="day">${d.day}</div><div class="mon">${d.mon}</div><div class="wk">${d.wd}</div></div>
+        <div class="show-info">
+          <div class="title">${s.musical}</div>
+          <div class="meta">${role}${s.city} · ${s.stage}${t}</div>
+        </div>
+        <div class="show-action">${status}${src}</div>
+      </div>`;
+    });
+  });
+  box.innerHTML=html;
+}
+
+function renderRoles(){
+  const map={};
+  SHOWS_DATA.shows.forEach(s=>{
+    const k=(s.role&&s.role.trim())?s.role.trim():'(未注明角色)';
+    if(!map[k]) map[k]={role:k,count:0,musicals:new Set(),cities:new Set()};
+    const o=map[k]; o.count++;
+    if(s.musical)o.musicals.add(s.musical);
+    if(s.city)o.cities.add(s.city);
+  });
+  const arr=Object.values(map).sort((a,b)=>b.count-a.count);
+  document.getElementById("rolesGrid").innerHTML=arr.map(o=>{
+    const ms=[...o.musicals].map(m=>`<span class="tg">${m}</span>`).join("");
+    const cs=[...o.cities].map(c=>`<span class="tg">${c}</span>`).join("");
+    return `<div class="card">
+      <div class="poster"><span class="yr">${o.count} 场</span></div>
+      <div class="body">
+        <div class="t">${o.role}</div>
+        <div class="c">共 ${o.count} 场 · 演于 ${o.musicals.size} 部剧目</div>
+        <div class="r">${ms}${cs}</div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function renderCharts(){
+  const note=document.getElementById("chartNote");
+  if(typeof Chart==='undefined'){
+    note.hidden=false;
+    note.textContent='图表库需联网加载（运行时从 CDN 获取，数据仍在本机解析、零上传）。请联网后刷新本页查看图表。';
+    return;
+  }
+  note.hidden=true;
+  if(chartsDone) return;
+
+  const cnt={}; SHOWS_DATA.shows.forEach(s=>cnt[s.musical]=(cnt[s.musical]||0)+1);
+  const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,12);
+  const labels=top.map(x=>x[0]); const data=top.map(x=>x[1]);
+  const palette=['#9DB8E8','#C9D6EF','#7fe7c4','#a78bfa','#f472b6','#fbbf24','#60a5fa','#f87171','#c084fc','#22d3ee','#fb923c','#94e2d5'];
+
+  new Chart(document.getElementById("musicalChart"),{
+    type:'bar',
+    data:{labels,datasets:[{label:'场次',data,backgroundColor:palette,borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:'#9DAAC6'},grid:{color:'rgba(157,184,232,.12)'}},
+        y:{ticks:{color:'#EAF1FB'},grid:{color:'rgba(157,184,232,.08)'}}
+      }}
+  });
+
+  const cCnt={}; SHOWS_DATA.shows.forEach(s=>cCnt[s.city]=(cCnt[s.city]||0)+1);
+  const cities=Object.entries(cCnt).sort((a,b)=>b[1]-a[1]);
+  new Chart(document.getElementById("cityChart"),{
+    type:'doughnut',
+    data:{labels:cities.map(x=>x[0]),datasets:[{data:cities.map(x=>x[1]),backgroundColor:palette,borderColor:'#070B1F',borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'right',labels:{color:'#EAF1FB',boxWidth:12}}}}
+  });
+  chartsDone=true;
+}
+
+function bind(){
+  ["search","fMusical","fCity","fYear"].forEach(id=>document.getElementById(id).addEventListener("input",renderSchedule));
+  document.getElementById("sortBtn").addEventListener("click",e=>{
+    state.sortDesc=!state.sortDesc;
+    e.target.textContent=state.sortDesc?"↓ 最新优先":"↑ 最早优先";
+    renderSchedule();
+  });
+  document.getElementById("upcoming").addEventListener("change",e=>{
+    state.upcomingOnly=e.target.checked; renderSchedule();
+  });
+  // 图表区进入视口时才渲染 (避免初始尺寸异常)
+  const chartsSec=document.getElementById("charts");
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting){ renderCharts(); io.disconnect(); } });
+    },{threshold:0.05});
+    io.observe(chartsSec);
+  }else{ renderCharts(); }
+}
+
+function init(){
+  if(!SHOWS_DATA){document.getElementById("scheduleList").innerHTML='<div class="empty">数据为空，请先运行抓取脚本。</div>';return;}
+  const a=SHOWS_DATA.artist||"党韫葳";
+  safe(()=>{document.getElementById("brandName").textContent=a;},"brand");
+  safe(()=>{document.getElementById("heroName").textContent=a;},"hero");
+  safe(()=>{document.getElementById("footName").textContent=a;},"foot");
+  safe(()=>{const fs=document.getElementById("footSrc"); fs.href=SHOWS_DATA.source||"#"; fs.textContent="数据来源 saoju.net";},"footsrc");
+  safe(()=>{document.getElementById("footMeta").textContent=
+    `数据更新于 ${SHOWS_DATA.updated_at} · 共 ${SHOWS_DATA.total} 场 · 来源 saoju.net`;},"footmeta");
+  safe(buildControls,"controls");
+  safe(renderStats,"stats");
+  safe(renderSchedule,"schedule");
+  safe(renderRoles,"roles");
+  safe(bind,"bind");
+}
+init();
+</script>
+</body>
+</html>
