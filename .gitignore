@@ -1,4 +1,9 @@
+# 本地密钥与凭据 (绝不提交)
+.ghtoken
 .gitcreds
+
+# 临时/测试产物
+_push.py
 page1.html
 fetch_test.py
 __pycache__/
