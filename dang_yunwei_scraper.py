@@ -10,8 +10,13 @@
 依赖   : 仅 Python 标准库 (urllib / ssl / html.parser / json / re)
 """
 
-import urllib.request, ssl, os, re, json, sys, time
+import urllib.request, ssl, os, re, json, sys, time, datetime
 from html.parser import HTMLParser
+
+# 北京时间 (UTC+8) —— 用于 updated_at 与"最后更新"显示, 避免服务器 UTC 导致日期错位
+CST = datetime.timezone(datetime.timedelta(hours=8))
+def today_cst():
+    return datetime.datetime.now(CST).strftime("%Y-%m-%d")
 
 # 演员信息可通过命令行参数覆盖: --artist-id <id> --name <姓名>
 # （saoju 演员页 URL 形如 https://y.saoju.net/yyj/artist/<id>/show）
@@ -378,7 +383,7 @@ def main():
         "artist": ARTIST,
         "artist_id": artist_id,
         "source": BASE,
-        "updated_at": time.strftime("%Y-%m-%d"),
+        "updated_at": today_cst(),
         "total": len(uniq),
         "shows": uniq,
     }
