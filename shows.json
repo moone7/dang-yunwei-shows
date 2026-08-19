@@ -2,8 +2,8 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-08-19",
-  "total": 322,
+  "updated_at": "2026-08-20",
+  "total": 323,
   "shows": [
     {
       "date": "2026-10-24",
@@ -111,6 +111,18 @@
       "stage": "青岛大剧院歌剧厅",
       "stage_id": null,
       "source": "saoju-tour"
+    },
+    {
+      "date": "2026-08-19",
+      "time": "19:30",
+      "musical": "椒花颂声",
+      "musical_id": 497,
+      "role": "上官婉儿",
+      "city": "上海",
+      "city_id": 1,
+      "stage": "曌剧场",
+      "stage_id": 544,
+      "datetime": "2026-08-19T19:30"
     },
     {
       "date": "2026-08-15",
