@@ -2,8 +2,8 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-08-29",
-  "total": 323,
+  "updated_at": "2026-08-30",
+  "total": 325,
   "shows": [
     {
       "date": "2026-10-24",
@@ -111,6 +111,30 @@
       "stage": "青岛大剧院歌剧厅",
       "stage_id": null,
       "source": "saoju-tour"
+    },
+    {
+      "date": "2026-08-29",
+      "time": "19:30",
+      "musical": "女巫",
+      "musical_id": 437,
+      "role": "ELSPETH",
+      "city": "南京",
+      "city_id": 13,
+      "stage": "江苏大剧院戏剧厅",
+      "stage_id": 184,
+      "datetime": "2026-08-29T19:30"
+    },
+    {
+      "date": "2026-08-29",
+      "time": "14:30",
+      "musical": "女巫",
+      "musical_id": 437,
+      "role": "ELSPETH",
+      "city": "南京",
+      "city_id": 13,
+      "stage": "江苏大剧院戏剧厅",
+      "stage_id": 184,
+      "datetime": "2026-08-29T14:30"
     },
     {
       "date": "2026-08-19",
