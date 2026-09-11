@@ -2,8 +2,8 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-09-11",
-  "total": 328,
+  "updated_at": "2026-09-12",
+  "total": 329,
   "shows": [
     {
       "date": "2026-10-24",
@@ -72,6 +72,18 @@
       "stage": "河南艺术中心",
       "stage_id": null,
       "source": "saoju-tour"
+    },
+    {
+      "date": "2026-09-11",
+      "time": "19:30",
+      "musical": "她对此感到厌烦",
+      "musical_id": 358,
+      "role": "辛西娅",
+      "city": "郑州",
+      "city_id": 18,
+      "stage": "河南艺术中心",
+      "stage_id": 41,
+      "datetime": "2026-09-11T19:30"
     },
     {
       "date": "2026-09-11",
