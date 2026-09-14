@@ -2,8 +2,8 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-09-14",
-  "total": 330,
+  "updated_at": "2026-09-15",
+  "total": 331,
   "shows": [
     {
       "date": "2026-10-24",
@@ -59,6 +59,18 @@
       "stage_id": null,
       "manual": true,
       "note": "来源: 双女主原创音乐剧《连璧》(大麦/亚华湖开票)，党韫葳饰谢宛宁；saoju 无逐场排期，日期按用户提供(9/16)，具体时间以大麦为准"
+    },
+    {
+      "date": "2026-09-13",
+      "time": "14:30",
+      "musical": "女巫",
+      "musical_id": 437,
+      "role": "MARGARET",
+      "city": "佛山",
+      "city_id": 33,
+      "stage": "佛山琼花大剧院",
+      "stage_id": 19,
+      "datetime": "2026-09-13T14:30"
     },
     {
       "date": "2026-09-12",
