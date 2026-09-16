@@ -2,8 +2,8 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-09-16",
-  "total": 331,
+  "updated_at": "2026-09-17",
+  "total": 332,
   "shows": [
     {
       "date": "2026-10-24",
@@ -45,6 +45,18 @@
       "stage_id": null,
       "manual": true,
       "note": "来源: 音乐剧《四大美女》官宣开票 (大麦/猫眼 2026-07-30 开票)，党韫葳饰王昭君"
+    },
+    {
+      "date": "2026-09-16",
+      "time": "19:30",
+      "musical": "连璧",
+      "musical_id": 379,
+      "role": "谢宛宁",
+      "city": "上海",
+      "city_id": 1,
+      "stage": "星空间407号·她剧场",
+      "stage_id": 185,
+      "datetime": "2026-09-16T19:30"
     },
     {
       "datetime": "2026-09-16T19:30",
