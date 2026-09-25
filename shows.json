@@ -2,8 +2,8 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-09-25",
-  "total": 334,
+  "updated_at": "2026-09-26",
+  "total": 335,
   "shows": [
     {
       "date": "2026-10-24",
@@ -45,6 +45,18 @@
       "stage_id": null,
       "manual": true,
       "note": "来源: 音乐剧《四大美女》官宣开票 (大麦/猫眼 2026-07-30 开票)，党韫葳饰王昭君"
+    },
+    {
+      "date": "2026-09-25",
+      "time": "19:30",
+      "musical": "寻找李二狗",
+      "musical_id": 375,
+      "role": "秀儿",
+      "city": "北京",
+      "city_id": 3,
+      "stage": "中央歌剧院剧场",
+      "stage_id": 49,
+      "datetime": "2026-09-25T19:30"
     },
     {
       "date": "2026-09-24",
