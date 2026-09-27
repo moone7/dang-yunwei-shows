@@ -2,8 +2,8 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-09-27",
-  "total": 336,
+  "updated_at": "2026-09-28",
+  "total": 337,
   "shows": [
     {
       "date": "2026-10-24",
@@ -31,6 +31,18 @@
       "stage_id": null,
       "manual": true,
       "note": "来源: 音乐剧《四大美女》官宣开票 (大麦/猫眼 2026-07-30 开票)，党韫葳饰王昭君"
+    },
+    {
+      "date": "2026-09-27",
+      "time": "14:30",
+      "musical": "女巫",
+      "musical_id": 437,
+      "role": "MARGARET",
+      "city": "西安",
+      "city_id": 5,
+      "stage": "西安广电大剧院",
+      "stage_id": 107,
+      "datetime": "2026-09-27T14:30"
     },
     {
       "date": "2026-09-26",
