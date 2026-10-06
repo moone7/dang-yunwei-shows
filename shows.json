@@ -2,8 +2,8 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-10-06",
-  "total": 342,
+  "updated_at": "2026-10-07",
+  "total": 344,
   "shows": [
     {
       "date": "2026-10-24",
@@ -17,6 +17,30 @@
       "stage": "杭州金沙湖大剧院",
       "stage_id": null,
       "source": "saoju-tour"
+    },
+    {
+      "date": "2026-10-06",
+      "time": "19:30",
+      "musical": "四大美女",
+      "musical_id": 521,
+      "role": "王昭君",
+      "city": "上海",
+      "city_id": 1,
+      "stage": "黄浦剧场中剧场",
+      "stage_id": 504,
+      "datetime": "2026-10-06T19:30"
+    },
+    {
+      "date": "2026-10-06",
+      "time": "14:00",
+      "musical": "椒花颂声",
+      "musical_id": 497,
+      "role": "上官婉儿",
+      "city": "上海",
+      "city_id": 1,
+      "stage": "曌剧场",
+      "stage_id": 544,
+      "datetime": "2026-10-06T14:00"
     },
     {
       "date": "2026-10-04",
