@@ -2,8 +2,8 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-10-09",
-  "total": 345,
+  "updated_at": "2026-10-10",
+  "total": 346,
   "shows": [
     {
       "date": "2026-10-24",
@@ -17,6 +17,18 @@
       "stage": "杭州金沙湖大剧院",
       "stage_id": null,
       "source": "saoju-tour"
+    },
+    {
+      "date": "2026-10-09",
+      "time": "19:30",
+      "musical": "连璧",
+      "musical_id": 379,
+      "role": "谢宛宁",
+      "city": "上海",
+      "city_id": 1,
+      "stage": "星空间407号·她剧场",
+      "stage_id": 185,
+      "datetime": "2026-10-09T19:30"
     },
     {
       "date": "2026-10-07",
