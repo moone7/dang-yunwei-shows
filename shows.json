@@ -2,8 +2,8 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-10-10",
-  "total": 346,
+  "updated_at": "2026-10-11",
+  "total": 347,
   "shows": [
     {
       "date": "2026-10-24",
@@ -17,6 +17,18 @@
       "stage": "杭州金沙湖大剧院",
       "stage_id": null,
       "source": "saoju-tour"
+    },
+    {
+      "date": "2026-10-10",
+      "time": "19:30",
+      "musical": "奇美拉",
+      "musical_id": 414,
+      "role": "窥梦人",
+      "city": "宁波",
+      "city_id": 30,
+      "stage": "北仑文化中心大剧院",
+      "stage_id": 579,
+      "datetime": "2026-10-10T19:30"
     },
     {
       "date": "2026-10-09",
