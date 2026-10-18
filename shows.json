@@ -2,8 +2,8 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-10-18",
-  "total": 348,
+  "updated_at": "2026-10-19",
+  "total": 349,
   "shows": [
     {
       "date": "2026-10-24",
@@ -17,6 +17,18 @@
       "stage": "杭州金沙湖大剧院",
       "stage_id": null,
       "source": "saoju-tour"
+    },
+    {
+      "date": "2026-10-18",
+      "time": "19:30",
+      "musical": "狐说臣与仙",
+      "musical_id": 474,
+      "role": "芸娘",
+      "city": "青岛",
+      "city_id": 17,
+      "stage": "青岛大剧院歌剧厅",
+      "stage_id": 151,
+      "datetime": "2026-10-18T19:30"
     },
     {
       "date": "2026-10-17",
