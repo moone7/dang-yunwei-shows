@@ -2,9 +2,21 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-10-25",
-  "total": 350,
+  "updated_at": "2026-10-26",
+  "total": 351,
   "shows": [
+    {
+      "date": "2026-10-25",
+      "time": "14:00",
+      "musical": "椒花颂声",
+      "musical_id": 497,
+      "role": "上官婉儿",
+      "city": "上海",
+      "city_id": 1,
+      "stage": "曌剧场",
+      "stage_id": 544,
+      "datetime": "2026-10-25T14:00"
+    },
     {
       "date": "2026-10-24",
       "time": "19:30",
