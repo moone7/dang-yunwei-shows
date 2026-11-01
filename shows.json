@@ -2,9 +2,21 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-11-01",
-  "total": 352,
+  "updated_at": "2026-11-02",
+  "total": 353,
   "shows": [
+    {
+      "date": "2026-11-01",
+      "time": "14:30",
+      "musical": "女巫",
+      "musical_id": 437,
+      "role": "ELSPETH",
+      "city": "北京",
+      "city_id": 3,
+      "stage": "天桥艺术中心小剧场",
+      "stage_id": 148,
+      "datetime": "2026-11-01T14:30"
+    },
     {
       "date": "2026-10-31",
       "time": "19:30",
