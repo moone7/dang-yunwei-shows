@@ -2,9 +2,21 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-11-10",
-  "total": 355,
+  "updated_at": "2026-11-11",
+  "total": 356,
   "shows": [
+    {
+      "date": "2026-11-10",
+      "time": "19:30",
+      "musical": "最美的一天",
+      "musical_id": 48,
+      "role": "许静雅",
+      "city": "北京",
+      "city_id": 3,
+      "stage": "天桥艺术中心中剧场",
+      "stage_id": 33,
+      "datetime": "2026-11-10T19:30"
+    },
     {
       "date": "2026-11-07",
       "time": "19:30",
