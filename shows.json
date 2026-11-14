@@ -2,9 +2,21 @@
   "artist": "党韫葳",
   "artist_id": 1538,
   "source": "https://y.saoju.net/yyj/artist/1538/show",
-  "updated_at": "2026-11-14",
-  "total": 357,
+  "updated_at": "2026-11-15",
+  "total": 358,
   "shows": [
+    {
+      "date": "2026-11-14",
+      "time": "19:30",
+      "musical": "女巫",
+      "musical_id": 437,
+      "role": "MARGARET",
+      "city": "南通",
+      "city_id": 31,
+      "stage": "南通大剧院歌剧厅",
+      "stage_id": 99,
+      "datetime": "2026-11-14T19:30"
+    },
     {
       "date": "2026-11-11",
       "time": "19:30",
